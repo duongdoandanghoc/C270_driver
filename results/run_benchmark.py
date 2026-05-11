@@ -6,9 +6,9 @@ import sys
 import os
 
 MODES = [
-    {"name": "mode1_baseline", "cmd": ["./c270_driver", "--no-display", "--no-stream"]},
-    {"name": "mode2_display", "cmd": ["./c270_driver", "--no-stream"]},
-    {"name": "mode3_rtsp", "cmd": ["./c270_driver", "--no-display", "-C", "h264"]}
+    {"name": "mode1_baseline", "cmd": ["./build/c270_app", "--no-display", "--no-stream"]},
+    {"name": "mode2_display", "cmd": ["./build/c270_app", "--no-stream"]},
+    {"name": "mode3_rtsp", "cmd": ["./build/c270_app", "--no-display", "-C", "h264"]}
 ]
 
 DURATION = 10  # seconds per mode
