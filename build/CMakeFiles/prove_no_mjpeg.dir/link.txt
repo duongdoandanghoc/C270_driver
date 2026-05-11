@@ -1,0 +1,1 @@
+/usr/bin/cc -Wall -Wextra -g -Wall -Wextra -g CMakeFiles/prove_no_mjpeg.dir/tools/prove_no_mjpeg.c.o CMakeFiles/prove_no_mjpeg.dir/src/c270_usb.c.o CMakeFiles/prove_no_mjpeg.dir/src/c270_uvc.c.o -o prove_no_mjpeg  -lusb-1.0 

@@ -1,0 +1,35 @@
+[  3%] Building C object CMakeFiles/c270_app.dir/src/c270_usb.c.o
+[ 11%] Building C object CMakeFiles/c270_app.dir/src/c270_uvc.c.o
+[ 15%] Building C object CMakeFiles/c270_app.dir/src/c270_capture.c.o
+[ 15%] Building C object CMakeFiles/test_step3_capture.dir/tools/test_step3_capture.c.o
+[ 19%] Building C object CMakeFiles/test_step4_display.dir/tools/test_step4_display.c.o
+[ 30%] Building C object CMakeFiles/test_step3_capture.dir/src/c270_uvc.c.o
+[ 30%] Building C object CMakeFiles/test_step1_usb.dir/src/c270_usb.c.o
+[ 23%] Building C object CMakeFiles/test_step2_uvc.dir/src/c270_uvc.c.o
+[ 42%] Building C object CMakeFiles/test_step1_usb.dir/tools/test_step1_usb.c.o
+[ 50%] Building C object CMakeFiles/test_step3_capture.dir/src/c270_usb.c.o
+[ 50%] Building C object CMakeFiles/c270_app.dir/src/c270_display.c.o
+[ 53%] Building C object CMakeFiles/test_step3_capture.dir/src/c270_capture.c.o
+[ 50%] Building C object CMakeFiles/c270_app.dir/src/c270_stream.c.o
+[ 53%] Building C object CMakeFiles/test_step2_uvc.dir/tools/test_step2_uvc.c.o
+[ 57%] Building C object CMakeFiles/test_step2_uvc.dir/src/c270_usb.c.o
+[ 61%] Building C object CMakeFiles/test_step4_display.dir/src/c270_usb.c.o
+[ 65%] Building C object CMakeFiles/c270_app.dir/src/c270_hotplug.c.o
+[ 69%] Building C object CMakeFiles/c270_app.dir/src/main.c.o
+[ 76%] Building C object CMakeFiles/test_step4_display.dir/src/c270_display.c.o
+[ 76%] Building C object CMakeFiles/test_step4_display.dir/src/c270_uvc.c.o
+[ 80%] Building C object CMakeFiles/test_step4_display.dir/src/c270_capture.c.o
+[ 84%] Linking C executable test_step2_uvc
+[ 88%] Linking C executable test_step1_usb
+[ 92%] Linking C executable test_step3_capture
+[ 92%] Built target test_step1_usb
+[ 92%] Built target test_step3_capture
+[ 92%] Built target test_step2_uvc
+/home/duong/c270_driver/src/c270_stream.c: In function ‘media_configure_cb’:
+/home/duong/c270_driver/src/c270_stream.c:37:53: warning: unused parameter ‘factory’ [-Wunused-parameter]
+   37 | static void media_configure_cb(GstRTSPMediaFactory *factory,
+      |                                ~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+[ 96%] Linking C executable c270_app
+[100%] Linking C executable test_step4_display
+[100%] Built target c270_app
+[100%] Built target test_step4_display
