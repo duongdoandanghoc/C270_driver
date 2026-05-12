@@ -64,12 +64,6 @@ CMAKE_BINARY_DIR = /home/duong/c270_driver/build
 
 # The main recursive "all" target.
 all: CMakeFiles/c270_app.dir/all
-all: CMakeFiles/test_step1_usb.dir/all
-all: CMakeFiles/test_step2_uvc.dir/all
-all: CMakeFiles/test_step3_capture.dir/all
-all: CMakeFiles/test_step4_display.dir/all
-all: CMakeFiles/prove_no_mjpeg.dir/all
-all: CMakeFiles/test_mjpeg_probe.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -78,12 +72,6 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/c270_app.dir/clean
-clean: CMakeFiles/test_step1_usb.dir/clean
-clean: CMakeFiles/test_step2_uvc.dir/clean
-clean: CMakeFiles/test_step3_capture.dir/clean
-clean: CMakeFiles/test_step4_display.dir/clean
-clean: CMakeFiles/prove_no_mjpeg.dir/clean
-clean: CMakeFiles/test_mjpeg_probe.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -93,12 +81,12 @@ clean: CMakeFiles/test_mjpeg_probe.dir/clean
 CMakeFiles/c270_app.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target c270_app"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target c270_app"
 .PHONY : CMakeFiles/c270_app.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/c270_app.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/c270_app.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 0
 .PHONY : CMakeFiles/c270_app.dir/rule
@@ -111,162 +99,6 @@ c270_app: CMakeFiles/c270_app.dir/rule
 CMakeFiles/c270_app.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/clean
 .PHONY : CMakeFiles/c270_app.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_step1_usb.dir
-
-# All Build rule for target.
-CMakeFiles/test_step1_usb.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step1_usb.dir/build.make CMakeFiles/test_step1_usb.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step1_usb.dir/build.make CMakeFiles/test_step1_usb.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=17,18,19 "Built target test_step1_usb"
-.PHONY : CMakeFiles/test_step1_usb.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_step1_usb.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 3
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_step1_usb.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_step1_usb.dir/rule
-
-# Convenience name for target.
-test_step1_usb: CMakeFiles/test_step1_usb.dir/rule
-.PHONY : test_step1_usb
-
-# clean rule for target.
-CMakeFiles/test_step1_usb.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step1_usb.dir/build.make CMakeFiles/test_step1_usb.dir/clean
-.PHONY : CMakeFiles/test_step1_usb.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_step2_uvc.dir
-
-# All Build rule for target.
-CMakeFiles/test_step2_uvc.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=20,21,22,23 "Built target test_step2_uvc"
-.PHONY : CMakeFiles/test_step2_uvc.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_step2_uvc.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 4
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_step2_uvc.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_step2_uvc.dir/rule
-
-# Convenience name for target.
-test_step2_uvc: CMakeFiles/test_step2_uvc.dir/rule
-.PHONY : test_step2_uvc
-
-# clean rule for target.
-CMakeFiles/test_step2_uvc.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/clean
-.PHONY : CMakeFiles/test_step2_uvc.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_step3_capture.dir
-
-# All Build rule for target.
-CMakeFiles/test_step3_capture.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=24,25,26,27,28 "Built target test_step3_capture"
-.PHONY : CMakeFiles/test_step3_capture.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_step3_capture.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 5
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_step3_capture.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_step3_capture.dir/rule
-
-# Convenience name for target.
-test_step3_capture: CMakeFiles/test_step3_capture.dir/rule
-.PHONY : test_step3_capture
-
-# clean rule for target.
-CMakeFiles/test_step3_capture.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/clean
-.PHONY : CMakeFiles/test_step3_capture.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_step4_display.dir
-
-# All Build rule for target.
-CMakeFiles/test_step4_display.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=29,30,31,32,33,34 "Built target test_step4_display"
-.PHONY : CMakeFiles/test_step4_display.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_step4_display.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 6
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_step4_display.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_step4_display.dir/rule
-
-# Convenience name for target.
-test_step4_display: CMakeFiles/test_step4_display.dir/rule
-.PHONY : test_step4_display
-
-# clean rule for target.
-CMakeFiles/test_step4_display.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/clean
-.PHONY : CMakeFiles/test_step4_display.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/prove_no_mjpeg.dir
-
-# All Build rule for target.
-CMakeFiles/prove_no_mjpeg.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=9,10,11,12 "Built target prove_no_mjpeg"
-.PHONY : CMakeFiles/prove_no_mjpeg.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/prove_no_mjpeg.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 4
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/prove_no_mjpeg.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 0
-.PHONY : CMakeFiles/prove_no_mjpeg.dir/rule
-
-# Convenience name for target.
-prove_no_mjpeg: CMakeFiles/prove_no_mjpeg.dir/rule
-.PHONY : prove_no_mjpeg
-
-# clean rule for target.
-CMakeFiles/prove_no_mjpeg.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/clean
-.PHONY : CMakeFiles/prove_no_mjpeg.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_mjpeg_probe.dir
-
-# All Build rule for target.
-CMakeFiles/test_mjpeg_probe.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=13,14,15,16 "Built target test_mjpeg_probe"
-.PHONY : CMakeFiles/test_mjpeg_probe.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_mjpeg_probe.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 4
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_mjpeg_probe.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duong/c270_driver/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_mjpeg_probe.dir/rule
-
-# Convenience name for target.
-test_mjpeg_probe: CMakeFiles/test_mjpeg_probe.dir/rule
-.PHONY : test_mjpeg_probe
-
-# clean rule for target.
-CMakeFiles/test_mjpeg_probe.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/clean
-.PHONY : CMakeFiles/test_mjpeg_probe.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

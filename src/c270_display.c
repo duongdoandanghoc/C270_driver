@@ -172,9 +172,7 @@ void display_show_mjpeg(DisplayContext *disp,
     cinfo.out_color_space = JCS_RGB;
     jpeg_start_decompress(&cinfo);
 
-    int w = (int)cinfo.output_width;
-    int h = (int)cinfo.output_height;
-    int stride = w * 3;
+    int stride = (int)cinfo.output_width * 3;
 
     JSAMPROW row_ptr[1];
     while (cinfo.output_scanline < cinfo.output_height) {

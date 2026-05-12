@@ -1,6 +1,6 @@
 #ifndef C270_STREAM_H
 #define C270_STREAM_H
-
+#include "c270_capture.h"  /* for DecodedFrame typedef (legacy) */
 #include <stdint.h>
 #include <stddef.h>
 
@@ -25,8 +25,7 @@ int  stream_init(StreamContext *ctx, int port, const char *mount_point,
                  int width, int height, int fps,
                  const char *codec, const char *password);
 /* Push decoded RGB24 frame (legacy, kept for compatibility) */
-struct DecodedFrame;
-void stream_push_frame(StreamContext *ctx, const struct DecodedFrame *frame);
+void stream_push_frame(StreamContext *ctx, const DecodedFrame *frame);
 
 /* Push raw MJPEG data — no decode needed, GStreamer pipeline handles it */
 void stream_push_mjpeg(StreamContext *ctx, const uint8_t *data, uint32_t size);

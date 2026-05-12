@@ -44,10 +44,4 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/c270_app.dir/DependInfo.cmake"
-  "CMakeFiles/test_step1_usb.dir/DependInfo.cmake"
-  "CMakeFiles/test_step2_uvc.dir/DependInfo.cmake"
-  "CMakeFiles/test_step3_capture.dir/DependInfo.cmake"
-  "CMakeFiles/test_step4_display.dir/DependInfo.cmake"
-  "CMakeFiles/prove_no_mjpeg.dir/DependInfo.cmake"
-  "CMakeFiles/test_mjpeg_probe.dir/DependInfo.cmake"
   )

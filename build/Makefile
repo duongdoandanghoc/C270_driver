@@ -129,121 +129,12 @@ c270_app/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/build
 .PHONY : c270_app/fast
 
-#=============================================================================
-# Target rules for targets named test_step1_usb
-
-# Build rule for target.
-test_step1_usb: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_step1_usb
-.PHONY : test_step1_usb
-
-# fast build rule for target.
-test_step1_usb/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step1_usb.dir/build.make CMakeFiles/test_step1_usb.dir/build
-.PHONY : test_step1_usb/fast
-
-#=============================================================================
-# Target rules for targets named test_step2_uvc
-
-# Build rule for target.
-test_step2_uvc: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_step2_uvc
-.PHONY : test_step2_uvc
-
-# fast build rule for target.
-test_step2_uvc/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/build
-.PHONY : test_step2_uvc/fast
-
-#=============================================================================
-# Target rules for targets named test_step3_capture
-
-# Build rule for target.
-test_step3_capture: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_step3_capture
-.PHONY : test_step3_capture
-
-# fast build rule for target.
-test_step3_capture/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/build
-.PHONY : test_step3_capture/fast
-
-#=============================================================================
-# Target rules for targets named test_step4_display
-
-# Build rule for target.
-test_step4_display: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_step4_display
-.PHONY : test_step4_display
-
-# fast build rule for target.
-test_step4_display/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/build
-.PHONY : test_step4_display/fast
-
-#=============================================================================
-# Target rules for targets named prove_no_mjpeg
-
-# Build rule for target.
-prove_no_mjpeg: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 prove_no_mjpeg
-.PHONY : prove_no_mjpeg
-
-# fast build rule for target.
-prove_no_mjpeg/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/build
-.PHONY : prove_no_mjpeg/fast
-
-#=============================================================================
-# Target rules for targets named test_mjpeg_probe
-
-# Build rule for target.
-test_mjpeg_probe: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_mjpeg_probe
-.PHONY : test_mjpeg_probe
-
-# fast build rule for target.
-test_mjpeg_probe/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/build
-.PHONY : test_mjpeg_probe/fast
-
-src/c270_capture.o: src/c270_capture.c.o
-.PHONY : src/c270_capture.o
-
-# target to build an object file
-src/c270_capture.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_capture.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/src/c270_capture.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/src/c270_capture.c.o
-.PHONY : src/c270_capture.c.o
-
-src/c270_capture.i: src/c270_capture.c.i
-.PHONY : src/c270_capture.i
-
-# target to preprocess a source file
-src/c270_capture.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_capture.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/src/c270_capture.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/src/c270_capture.c.i
-.PHONY : src/c270_capture.c.i
-
-src/c270_capture.s: src/c270_capture.c.s
-.PHONY : src/c270_capture.s
-
-# target to generate assembly for a file
-src/c270_capture.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_capture.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/src/c270_capture.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/src/c270_capture.c.s
-.PHONY : src/c270_capture.c.s
-
 src/c270_display.o: src/c270_display.c.o
 .PHONY : src/c270_display.o
 
 # target to build an object file
 src/c270_display.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_display.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/src/c270_display.c.o
 .PHONY : src/c270_display.c.o
 
 src/c270_display.i: src/c270_display.c.i
@@ -252,7 +143,6 @@ src/c270_display.i: src/c270_display.c.i
 # target to preprocess a source file
 src/c270_display.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_display.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/src/c270_display.c.i
 .PHONY : src/c270_display.c.i
 
 src/c270_display.s: src/c270_display.c.s
@@ -261,32 +151,7 @@ src/c270_display.s: src/c270_display.c.s
 # target to generate assembly for a file
 src/c270_display.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_display.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/src/c270_display.c.s
 .PHONY : src/c270_display.c.s
-
-src/c270_hotplug.o: src/c270_hotplug.c.o
-.PHONY : src/c270_hotplug.o
-
-# target to build an object file
-src/c270_hotplug.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_hotplug.c.o
-.PHONY : src/c270_hotplug.c.o
-
-src/c270_hotplug.i: src/c270_hotplug.c.i
-.PHONY : src/c270_hotplug.i
-
-# target to preprocess a source file
-src/c270_hotplug.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_hotplug.c.i
-.PHONY : src/c270_hotplug.c.i
-
-src/c270_hotplug.s: src/c270_hotplug.c.s
-.PHONY : src/c270_hotplug.s
-
-# target to generate assembly for a file
-src/c270_hotplug.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_hotplug.c.s
-.PHONY : src/c270_hotplug.c.s
 
 src/c270_stream.o: src/c270_stream.c.o
 .PHONY : src/c270_stream.o
@@ -312,86 +177,29 @@ src/c270_stream.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_stream.c.s
 .PHONY : src/c270_stream.c.s
 
-src/c270_usb.o: src/c270_usb.c.o
-.PHONY : src/c270_usb.o
+src/c270_v4l2.o: src/c270_v4l2.c.o
+.PHONY : src/c270_v4l2.o
 
 # target to build an object file
-src/c270_usb.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_usb.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step1_usb.dir/build.make CMakeFiles/test_step1_usb.dir/src/c270_usb.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/src/c270_usb.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/src/c270_usb.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/src/c270_usb.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/src/c270_usb.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/src/c270_usb.c.o
-.PHONY : src/c270_usb.c.o
+src/c270_v4l2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_v4l2.c.o
+.PHONY : src/c270_v4l2.c.o
 
-src/c270_usb.i: src/c270_usb.c.i
-.PHONY : src/c270_usb.i
+src/c270_v4l2.i: src/c270_v4l2.c.i
+.PHONY : src/c270_v4l2.i
 
 # target to preprocess a source file
-src/c270_usb.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_usb.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step1_usb.dir/build.make CMakeFiles/test_step1_usb.dir/src/c270_usb.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/src/c270_usb.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/src/c270_usb.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/src/c270_usb.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/src/c270_usb.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/src/c270_usb.c.i
-.PHONY : src/c270_usb.c.i
+src/c270_v4l2.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_v4l2.c.i
+.PHONY : src/c270_v4l2.c.i
 
-src/c270_usb.s: src/c270_usb.c.s
-.PHONY : src/c270_usb.s
+src/c270_v4l2.s: src/c270_v4l2.c.s
+.PHONY : src/c270_v4l2.s
 
 # target to generate assembly for a file
-src/c270_usb.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_usb.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step1_usb.dir/build.make CMakeFiles/test_step1_usb.dir/src/c270_usb.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/src/c270_usb.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/src/c270_usb.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/src/c270_usb.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/src/c270_usb.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/src/c270_usb.c.s
-.PHONY : src/c270_usb.c.s
-
-src/c270_uvc.o: src/c270_uvc.c.o
-.PHONY : src/c270_uvc.o
-
-# target to build an object file
-src/c270_uvc.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_uvc.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/src/c270_uvc.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/src/c270_uvc.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/src/c270_uvc.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/src/c270_uvc.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/src/c270_uvc.c.o
-.PHONY : src/c270_uvc.c.o
-
-src/c270_uvc.i: src/c270_uvc.c.i
-.PHONY : src/c270_uvc.i
-
-# target to preprocess a source file
-src/c270_uvc.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_uvc.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/src/c270_uvc.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/src/c270_uvc.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/src/c270_uvc.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/src/c270_uvc.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/src/c270_uvc.c.i
-.PHONY : src/c270_uvc.c.i
-
-src/c270_uvc.s: src/c270_uvc.c.s
-.PHONY : src/c270_uvc.s
-
-# target to generate assembly for a file
-src/c270_uvc.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_uvc.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/src/c270_uvc.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/src/c270_uvc.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/src/c270_uvc.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/src/c270_uvc.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/src/c270_uvc.c.s
-.PHONY : src/c270_uvc.c.s
+src/c270_v4l2.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/c270_v4l2.c.s
+.PHONY : src/c270_v4l2.c.s
 
 src/main.o: src/main.c.o
 .PHONY : src/main.o
@@ -417,150 +225,6 @@ src/main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/c270_app.dir/build.make CMakeFiles/c270_app.dir/src/main.c.s
 .PHONY : src/main.c.s
 
-tools/prove_no_mjpeg.o: tools/prove_no_mjpeg.c.o
-.PHONY : tools/prove_no_mjpeg.o
-
-# target to build an object file
-tools/prove_no_mjpeg.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/tools/prove_no_mjpeg.c.o
-.PHONY : tools/prove_no_mjpeg.c.o
-
-tools/prove_no_mjpeg.i: tools/prove_no_mjpeg.c.i
-.PHONY : tools/prove_no_mjpeg.i
-
-# target to preprocess a source file
-tools/prove_no_mjpeg.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/tools/prove_no_mjpeg.c.i
-.PHONY : tools/prove_no_mjpeg.c.i
-
-tools/prove_no_mjpeg.s: tools/prove_no_mjpeg.c.s
-.PHONY : tools/prove_no_mjpeg.s
-
-# target to generate assembly for a file
-tools/prove_no_mjpeg.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prove_no_mjpeg.dir/build.make CMakeFiles/prove_no_mjpeg.dir/tools/prove_no_mjpeg.c.s
-.PHONY : tools/prove_no_mjpeg.c.s
-
-tools/test_mjpeg_probe.o: tools/test_mjpeg_probe.c.o
-.PHONY : tools/test_mjpeg_probe.o
-
-# target to build an object file
-tools/test_mjpeg_probe.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/tools/test_mjpeg_probe.c.o
-.PHONY : tools/test_mjpeg_probe.c.o
-
-tools/test_mjpeg_probe.i: tools/test_mjpeg_probe.c.i
-.PHONY : tools/test_mjpeg_probe.i
-
-# target to preprocess a source file
-tools/test_mjpeg_probe.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/tools/test_mjpeg_probe.c.i
-.PHONY : tools/test_mjpeg_probe.c.i
-
-tools/test_mjpeg_probe.s: tools/test_mjpeg_probe.c.s
-.PHONY : tools/test_mjpeg_probe.s
-
-# target to generate assembly for a file
-tools/test_mjpeg_probe.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_mjpeg_probe.dir/build.make CMakeFiles/test_mjpeg_probe.dir/tools/test_mjpeg_probe.c.s
-.PHONY : tools/test_mjpeg_probe.c.s
-
-tools/test_step1_usb.o: tools/test_step1_usb.c.o
-.PHONY : tools/test_step1_usb.o
-
-# target to build an object file
-tools/test_step1_usb.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step1_usb.dir/build.make CMakeFiles/test_step1_usb.dir/tools/test_step1_usb.c.o
-.PHONY : tools/test_step1_usb.c.o
-
-tools/test_step1_usb.i: tools/test_step1_usb.c.i
-.PHONY : tools/test_step1_usb.i
-
-# target to preprocess a source file
-tools/test_step1_usb.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step1_usb.dir/build.make CMakeFiles/test_step1_usb.dir/tools/test_step1_usb.c.i
-.PHONY : tools/test_step1_usb.c.i
-
-tools/test_step1_usb.s: tools/test_step1_usb.c.s
-.PHONY : tools/test_step1_usb.s
-
-# target to generate assembly for a file
-tools/test_step1_usb.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step1_usb.dir/build.make CMakeFiles/test_step1_usb.dir/tools/test_step1_usb.c.s
-.PHONY : tools/test_step1_usb.c.s
-
-tools/test_step2_uvc.o: tools/test_step2_uvc.c.o
-.PHONY : tools/test_step2_uvc.o
-
-# target to build an object file
-tools/test_step2_uvc.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/tools/test_step2_uvc.c.o
-.PHONY : tools/test_step2_uvc.c.o
-
-tools/test_step2_uvc.i: tools/test_step2_uvc.c.i
-.PHONY : tools/test_step2_uvc.i
-
-# target to preprocess a source file
-tools/test_step2_uvc.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/tools/test_step2_uvc.c.i
-.PHONY : tools/test_step2_uvc.c.i
-
-tools/test_step2_uvc.s: tools/test_step2_uvc.c.s
-.PHONY : tools/test_step2_uvc.s
-
-# target to generate assembly for a file
-tools/test_step2_uvc.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step2_uvc.dir/build.make CMakeFiles/test_step2_uvc.dir/tools/test_step2_uvc.c.s
-.PHONY : tools/test_step2_uvc.c.s
-
-tools/test_step3_capture.o: tools/test_step3_capture.c.o
-.PHONY : tools/test_step3_capture.o
-
-# target to build an object file
-tools/test_step3_capture.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/tools/test_step3_capture.c.o
-.PHONY : tools/test_step3_capture.c.o
-
-tools/test_step3_capture.i: tools/test_step3_capture.c.i
-.PHONY : tools/test_step3_capture.i
-
-# target to preprocess a source file
-tools/test_step3_capture.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/tools/test_step3_capture.c.i
-.PHONY : tools/test_step3_capture.c.i
-
-tools/test_step3_capture.s: tools/test_step3_capture.c.s
-.PHONY : tools/test_step3_capture.s
-
-# target to generate assembly for a file
-tools/test_step3_capture.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step3_capture.dir/build.make CMakeFiles/test_step3_capture.dir/tools/test_step3_capture.c.s
-.PHONY : tools/test_step3_capture.c.s
-
-tools/test_step4_display.o: tools/test_step4_display.c.o
-.PHONY : tools/test_step4_display.o
-
-# target to build an object file
-tools/test_step4_display.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/tools/test_step4_display.c.o
-.PHONY : tools/test_step4_display.c.o
-
-tools/test_step4_display.i: tools/test_step4_display.c.i
-.PHONY : tools/test_step4_display.i
-
-# target to preprocess a source file
-tools/test_step4_display.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/tools/test_step4_display.c.i
-.PHONY : tools/test_step4_display.c.i
-
-tools/test_step4_display.s: tools/test_step4_display.c.s
-.PHONY : tools/test_step4_display.s
-
-# target to generate assembly for a file
-tools/test_step4_display.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_step4_display.dir/build.make CMakeFiles/test_step4_display.dir/tools/test_step4_display.c.s
-.PHONY : tools/test_step4_display.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -570,51 +234,18 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... c270_app"
-	@echo "... prove_no_mjpeg"
-	@echo "... test_mjpeg_probe"
-	@echo "... test_step1_usb"
-	@echo "... test_step2_uvc"
-	@echo "... test_step3_capture"
-	@echo "... test_step4_display"
-	@echo "... src/c270_capture.o"
-	@echo "... src/c270_capture.i"
-	@echo "... src/c270_capture.s"
 	@echo "... src/c270_display.o"
 	@echo "... src/c270_display.i"
 	@echo "... src/c270_display.s"
-	@echo "... src/c270_hotplug.o"
-	@echo "... src/c270_hotplug.i"
-	@echo "... src/c270_hotplug.s"
 	@echo "... src/c270_stream.o"
 	@echo "... src/c270_stream.i"
 	@echo "... src/c270_stream.s"
-	@echo "... src/c270_usb.o"
-	@echo "... src/c270_usb.i"
-	@echo "... src/c270_usb.s"
-	@echo "... src/c270_uvc.o"
-	@echo "... src/c270_uvc.i"
-	@echo "... src/c270_uvc.s"
+	@echo "... src/c270_v4l2.o"
+	@echo "... src/c270_v4l2.i"
+	@echo "... src/c270_v4l2.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... tools/prove_no_mjpeg.o"
-	@echo "... tools/prove_no_mjpeg.i"
-	@echo "... tools/prove_no_mjpeg.s"
-	@echo "... tools/test_mjpeg_probe.o"
-	@echo "... tools/test_mjpeg_probe.i"
-	@echo "... tools/test_mjpeg_probe.s"
-	@echo "... tools/test_step1_usb.o"
-	@echo "... tools/test_step1_usb.i"
-	@echo "... tools/test_step1_usb.s"
-	@echo "... tools/test_step2_uvc.o"
-	@echo "... tools/test_step2_uvc.i"
-	@echo "... tools/test_step2_uvc.s"
-	@echo "... tools/test_step3_capture.o"
-	@echo "... tools/test_step3_capture.i"
-	@echo "... tools/test_step3_capture.s"
-	@echo "... tools/test_step4_display.o"
-	@echo "... tools/test_step4_display.i"
-	@echo "... tools/test_step4_display.s"
 .PHONY : help
 
 

@@ -8,12 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/duong/c270_driver/src/c270_capture.c" "CMakeFiles/c270_app.dir/src/c270_capture.c.o" "gcc" "CMakeFiles/c270_app.dir/src/c270_capture.c.o.d"
   "/home/duong/c270_driver/src/c270_display.c" "CMakeFiles/c270_app.dir/src/c270_display.c.o" "gcc" "CMakeFiles/c270_app.dir/src/c270_display.c.o.d"
-  "/home/duong/c270_driver/src/c270_hotplug.c" "CMakeFiles/c270_app.dir/src/c270_hotplug.c.o" "gcc" "CMakeFiles/c270_app.dir/src/c270_hotplug.c.o.d"
   "/home/duong/c270_driver/src/c270_stream.c" "CMakeFiles/c270_app.dir/src/c270_stream.c.o" "gcc" "CMakeFiles/c270_app.dir/src/c270_stream.c.o.d"
-  "/home/duong/c270_driver/src/c270_usb.c" "CMakeFiles/c270_app.dir/src/c270_usb.c.o" "gcc" "CMakeFiles/c270_app.dir/src/c270_usb.c.o.d"
-  "/home/duong/c270_driver/src/c270_uvc.c" "CMakeFiles/c270_app.dir/src/c270_uvc.c.o" "gcc" "CMakeFiles/c270_app.dir/src/c270_uvc.c.o.d"
+  "/home/duong/c270_driver/src/c270_v4l2.c" "CMakeFiles/c270_app.dir/src/c270_v4l2.c.o" "gcc" "CMakeFiles/c270_app.dir/src/c270_v4l2.c.o.d"
   "/home/duong/c270_driver/src/main.c" "CMakeFiles/c270_app.dir/src/main.c.o" "gcc" "CMakeFiles/c270_app.dir/src/main.c.o.d"
   )
 

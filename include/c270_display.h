@@ -1,6 +1,7 @@
 #ifndef C270_DISPLAY_H
 #define C270_DISPLAY_H
 
+#include "c270_capture.h"  /* for DecodedFrame typedef (legacy) */
 #include <stdint.h>
 #include <stddef.h>
 
@@ -19,9 +20,8 @@ int  display_init(DisplayContext *disp, int width, int height,
                   const char *title);
 
 /* Show decoded RGB24 frame (legacy) */
-struct DecodedFrame;
 void display_show_frame(DisplayContext *disp,
-                        const struct DecodedFrame *frame,
+                        const DecodedFrame *frame,
                         float fps,
                         const char *camera_id);
 

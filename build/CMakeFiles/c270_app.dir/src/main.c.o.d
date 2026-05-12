@@ -1,9 +1,6 @@
 CMakeFiles/c270_app.dir/src/main.c.o: /home/duong/c270_driver/src/main.c \
- /usr/include/stdc-predef.h /home/duong/c270_driver/include/c270_usb.h \
- /usr/include/libusb-1.0/libusb.h \
- /usr/lib/gcc/x86_64-linux-gnu/13/include/limits.h \
- /usr/lib/gcc/x86_64-linux-gnu/13/include/syslimits.h \
- /usr/include/limits.h \
+ /usr/include/stdc-predef.h /home/duong/c270_driver/include/c270_v4l2.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -12,13 +9,6 @@ CMakeFiles/c270_app.dir/src/main.c.o: /home/duong/c270_driver/src/main.c \
  /usr/include/x86_64-linux-gnu/bits/long-double.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
- /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
- /usr/include/x86_64-linux-gnu/bits/local_lim.h \
- /usr/include/linux/limits.h \
- /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h \
- /usr/include/x86_64-linux-gnu/bits/pthread_stack_min.h \
- /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
- /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/types.h \
  /usr/include/x86_64-linux-gnu/bits/typesizes.h \
  /usr/include/x86_64-linux-gnu/bits/time64.h \
@@ -26,12 +16,24 @@ CMakeFiles/c270_app.dir/src/main.c.o: /home/duong/c270_driver/src/main.c \
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
+ /home/duong/c270_driver/include/c270_display.h \
+ /home/duong/c270_driver/include/c270_capture.h \
+ /home/duong/c270_driver/include/c270_usb.h \
+ /usr/include/libusb-1.0/libusb.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/limits.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/syslimits.h \
+ /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/local_lim.h \
+ /usr/include/linux/limits.h \
+ /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h \
+ /usr/include/x86_64-linux-gnu/bits/pthread_stack_min.h \
+ /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/sys/types.h \
  /usr/include/x86_64-linux-gnu/bits/types/clock_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/timer_t.h \
- /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/types/timer_t.h /usr/include/endian.h \
  /usr/include/x86_64-linux-gnu/bits/endian.h \
  /usr/include/x86_64-linux-gnu/bits/endianness.h \
  /usr/include/x86_64-linux-gnu/bits/byteswap.h \
@@ -55,13 +57,7 @@ CMakeFiles/c270_app.dir/src/main.c.o: /home/duong/c270_driver/src/main.c \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
  /home/duong/c270_driver/include/c270_uvc.h \
- /home/duong/c270_driver/include/c270_usb.h \
- /home/duong/c270_driver/include/c270_capture.h \
- /home/duong/c270_driver/include/c270_uvc.h \
- /home/duong/c270_driver/include/c270_display.h \
- /home/duong/c270_driver/include/c270_capture.h \
- /home/duong/c270_driver/include/c270_stream.h \
- /home/duong/c270_driver/include/c270_hotplug.h /usr/include/stdio.h \
+ /home/duong/c270_driver/include/c270_stream.h /usr/include/stdio.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
@@ -103,4 +99,6 @@ CMakeFiles/c270_app.dir/src/main.c.o: /home/duong/c270_driver/src/main.c \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h /usr/include/string.h \
  /usr/include/strings.h /usr/include/getopt.h \
- /usr/include/x86_64-linux-gnu/bits/getopt_ext.h
+ /usr/include/x86_64-linux-gnu/bits/getopt_ext.h /usr/include/poll.h \
+ /usr/include/x86_64-linux-gnu/sys/poll.h \
+ /usr/include/x86_64-linux-gnu/bits/poll.h

@@ -1,9 +1,3 @@
 /home/duong/c270_driver/build/CMakeFiles/c270_app.dir
-/home/duong/c270_driver/build/CMakeFiles/test_step1_usb.dir
-/home/duong/c270_driver/build/CMakeFiles/test_step2_uvc.dir
-/home/duong/c270_driver/build/CMakeFiles/test_step3_capture.dir
-/home/duong/c270_driver/build/CMakeFiles/test_step4_display.dir
-/home/duong/c270_driver/build/CMakeFiles/prove_no_mjpeg.dir
-/home/duong/c270_driver/build/CMakeFiles/test_mjpeg_probe.dir
 /home/duong/c270_driver/build/CMakeFiles/edit_cache.dir
 /home/duong/c270_driver/build/CMakeFiles/rebuild_cache.dir

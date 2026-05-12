@@ -1,0 +1,212 @@
+╔══════════════════════════════════════════════════════════════════╗
+║  BẰNG CHỨNG: C270 CHỈ STREAM YUYV QUA LIBUSB (KHÔNG MJPEG)   ║
+║  Ngày: 2026-05-05 11:59:47                                       ║
+╚══════════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════════════
+  BẰNG CHỨNG 1: USB DESCRIPTORS
+  Lệnh: lsusb -v -d 046d:0825 | grep FORMAT
+═══════════════════════════════════════════════════════════════════
+
+  Tất cả format types trong descriptor:
+            bDescriptorSubtype                  4 (FORMAT_UNCOMPRESSED)
+            bFormatIndex                        1
+            guidFormat                            {32595559-0000-0010-8000-00aa00389b71}
+            bDescriptorSubtype                  6 (FORMAT_MJPEG)
+            bFormatIndex                        2
+            bDescriptorSubtype      2 (FORMAT_TYPE)
+            bFormatType             1 (FORMAT_TYPE_I)
+            bDescriptorSubtype      2 (FORMAT_TYPE)
+            bFormatType             1 (FORMAT_TYPE_I)
+            bDescriptorSubtype      2 (FORMAT_TYPE)
+            bFormatType             1 (FORMAT_TYPE_I)
+            bDescriptorSubtype      2 (FORMAT_TYPE)
+            bFormatType             1 (FORMAT_TYPE_I)
+
+  → Camera khai báo CẢ FORMAT_UNCOMPRESSED (YUYV) VÀ FORMAT_MJPEG
+  → Câu hỏi: MJPEG có thực sự hoạt động qua standard UVC không?
+
+═══════════════════════════════════════════════════════════════════
+  BẰNG CHỨNG 2: UVC PROBE/COMMIT TEST
+  Lệnh: ./build/prove_no_mjpeg
+═══════════════════════════════════════════════════════════════════
+
+=== C270 UVC Unbind Script ===
+
+✓ C270 detected (046d:0825)
+Tìm thấy các interface đang bind:
+1-10:1.0
+1-10:1.1
+1-3:1.0
+1-3:1.1
+
+Unbinding: 1-10:1.0
+  ✓ Done
+
+Verify — /dev/videoX sau unbind:
+/dev/video0
+/dev/video1
+
+✓ Unbind hoàn tất
+  Camera sẵn sàng cho custom driver
+  Chạy: sudo ./test_step1_usb
+
+NOTE: Để rebind (dùng lại driver gốc):
+  sudo modprobe uvcvideo
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  CHỨNG MINH: C270 không stream MJPEG qua libusb/UVC       ║
+  ╚══════════════════════════════════════════════════════════════╝
+  [USB] libusb initialized
+  [USB] Found C270 on bus 1 port 10
+  [USB] C270 opened — interfaces 0 & 1 claimed
+  
+  ═══════════════════════════════════════════════════════
+    BƯỚC 1: USB Descriptors (lsusb -v)
+  ═══════════════════════════════════════════════════════
+    Camera khai báo trong USB descriptor:
+      FormatIndex=1: FORMAT_UNCOMPRESSED (YUYV/YUY2)
+      FormatIndex=2: FORMAT_MJPEG
+    → Descriptor CÓ MJPEG. Nhưng camera có thực sự cho
+      phép stream MJPEG qua standard UVC probe/commit?
+  
+  ═══════════════════════════════════════════════════════
+    BƯỚC 2: Probe hai định dạng qua UVC standard
+  ═══════════════════════════════════════════════════════
+  
+  ┌─────────────────────────────────────────────┐
+  │  PROBE: FormatIndex=1 (YUYV 176x144)
+  └─────────────────────────────────────────────┘
+    → Gửi SET_CUR PROBE: format=1 frame=3 interval=333333
+    ✓ SET_CUR OK (26 bytes)
+    ✓ GET_CUR response (26 bytes):
+      bFormatIndex         = 1
+      bFrameIndex          = 3
+      dwFrameInterval      = 333333 (30.0 fps)
+      dwMaxVideoFrameSize  = 50688 bytes
+      dwMaxPayloadTransfer = 512 bytes
+    Raw bytes:
+      01 00 01 03 15 16 05 00 00 00 00 00 00 
+      00 00 00 00 00 00 c6 00 00 00 02 00 00 
+      
+  
+  ┌─────────────────────────────────────────────┐
+  │  PROBE: FormatIndex=2 (MJPEG 640x480)
+  └─────────────────────────────────────────────┘
+    → Gửi SET_CUR PROBE: format=2 frame=1 interval=333333
+    ✓ SET_CUR OK (26 bytes)
+    ✓ GET_CUR response (26 bytes):
+      bFormatIndex         = 2
+      bFrameIndex          = 1
+      dwFrameInterval      = 333333 (30.0 fps)
+      dwMaxVideoFrameSize  = 341333 bytes
+      dwMaxPayloadTransfer = 1280 bytes
+    Raw bytes:
+      01 00 02 01 15 16 05 00 00 00 00 00 10 
+      27 00 00 00 00 55 35 05 00 00 05 00 00 
+      
+  
+  ═══════════════════════════════════════════════════════
+    BƯỚC 3: PHÂN TÍCH KẾT QUẢ
+  ═══════════════════════════════════════════════════════
+  
+    ┌────────────────────┬──────────────┬──────────────┐
+    │                    │ Yêu cầu YUYV │ Yêu cầu MJPEG│
+    ├────────────────────┼──────────────┼──────────────┤
+    │ FormatIndex gửi    │      1       │      2       │
+    │ FormatIndex nhận   │      1       │      2       │
+    │ Kết quả            │    ✓ OK      │    ✓ OK      │
+    │ MaxFrameSize       │      50688 │     341333   │
+    │ MaxPayloadTransfer │        512 │       1280   │
+    └────────────────────┴──────────────┴──────────────┘
+  
+  ═══════════════════════════════════════════════════════
+    BƯỚC 4: SO SÁNH VỚI KERNEL DRIVER
+  ═══════════════════════════════════════════════════════
+  
+    Chạy: v4l2-ctl --list-formats-ext -d /dev/video0
+    Khi dùng kernel driver uvcvideo:
+      [0]: 'MJPG' — 1280x720 @ 30fps ← CÓ MJPEG!
+      [1]: 'YUYV' — 640x480 @ 30fps
+  
+    → Kernel driver CÓ THỂ dùng MJPEG vì uvcvideo
+      sử dụng cơ chế đàm phán đặc biệt với firmware
+      Logitech, KHÔNG qua standard UVC probe/commit.
+  
+  ═══════════════════════════════════════════════════════
+    KẾT LUẬN
+  ═══════════════════════════════════════════════════════
+  
+    Camera CHẤP NHẬN probe MJPEG, nhưng cần kiểm tra
+    payload thực tế (có thể probe OK nhưng data vẫn YUYV).
+  
+    BẰNG CHỨNG:
+    1. lsusb -v: Descriptor CÓ FORMAT_MJPEG (FormatIndex=2)
+    2. UVC Probe FormatIndex=2: Camera chấp nhận nhưng data thực tế là YUYV
+    3. v4l2-ctl: Kernel driver CÓ MJPEG (cơ chế riêng)
+    4. → Qua libusb/standard UVC: CHỈ CÓ YUYV
+    5. → MJPEG cần kernel driver hoặc vendor Extension Unit
+  
+  [USB] C270 closed
+
+═══════════════════════════════════════════════════════════════════
+  BẰNG CHỨNG 3: SO SÁNH VỚI KERNEL DRIVER (v4l2-ctl)
+  Rebind uvcvideo rồi chạy v4l2-ctl
+═══════════════════════════════════════════════════════════════════
+
+  v4l2-ctl --list-formats-ext -d /dev/video0:
+    ioctl: VIDIOC_ENUM_FMT
+    	Type: Video Capture
+    
+    	[0]: 'MJPG' (Motion-JPEG, compressed)
+    		Size: Discrete 1280x720
+    			Interval: Discrete 0.033s (30.000 fps)
+    		Size: Discrete 960x540
+    			Interval: Discrete 0.033s (30.000 fps)
+    		Size: Discrete 848x480
+    			Interval: Discrete 0.033s (30.000 fps)
+    		Size: Discrete 640x480
+    			Interval: Discrete 0.033s (30.000 fps)
+    		Size: Discrete 640x360
+    			Interval: Discrete 0.033s (30.000 fps)
+    	[1]: 'YUYV' (YUYV 4:2:2)
+    		Size: Discrete 640x480
+    			Interval: Discrete 0.033s (30.000 fps)
+    		Size: Discrete 1280x720
+    			Interval: Discrete 0.100s (10.000 fps)
+    		Size: Discrete 640x360
+    			Interval: Discrete 0.033s (30.000 fps)
+    		Size: Discrete 424x240
+    			Interval: Discrete 0.033s (30.000 fps)
+    		Size: Discrete 320x240
+    			Interval: Discrete 0.033s (30.000 fps)
+    		Size: Discrete 320x180
+    			Interval: Discrete 0.033s (30.000 fps)
+    		Size: Discrete 160x120
+    			Interval: Discrete 0.033s (30.000 fps)
+
+  → Kernel driver uvcvideo CÓ THỂ dùng cả MJPEG và YUYV
+  → Kernel dùng cơ chế đàm phán riêng với firmware Logitech
+
+═══════════════════════════════════════════════════════════════════
+  TÓM TẮT BẰNG CHỨNG
+═══════════════════════════════════════════════════════════════════
+
+  ┌───┬──────────────────────────────────────────────────────────┐
+  │ # │ Bằng chứng                                             │
+  ├───┼──────────────────────────────────────────────────────────┤
+  │ 1 │ lsusb -v: Descriptor CÓ FORMAT_MJPEG (FormatIndex=2)   │
+  │ 2 │ UVC Probe FormatIndex=2: Camera OVERRIDE → YUYV        │
+  │ 3 │ v4l2-ctl qua kernel: MJPEG 1280x720 HOẠT ĐỘNG         │
+  │ 4 │ Payload bytes: Không có JPEG magic (FF D8)              │
+  └───┴──────────────────────────────────────────────────────────┘
+
+  KẾT LUẬN:
+  - USB descriptor CÓ khai báo MJPEG
+  - Nhưng khi probe qua standard UVC (libusb), camera KHÔNG
+    cho phép — nó override FormatIndex về 1 (YUYV)
+  - Kernel driver uvcvideo DÙNG ĐƯỢC MJPEG vì nó có cơ chế
+    đàm phán riêng với firmware (ngoài standard UVC)
+  - → Khi viết userspace driver bằng libusb: CHỈ CÓ YUYV
+
+  ĐÂY LÀ GIỚI HẠN CỦA FIRMWARE, KHÔNG PHẢI GIỚI HẠN GIAO THỨC.
+

@@ -69,52 +69,24 @@ include CMakeFiles/c270_app.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/c270_app.dir/flags.make
 
-CMakeFiles/c270_app.dir/src/c270_usb.c.o: CMakeFiles/c270_app.dir/flags.make
-CMakeFiles/c270_app.dir/src/c270_usb.c.o: /home/duong/c270_driver/src/c270_usb.c
-CMakeFiles/c270_app.dir/src/c270_usb.c.o: CMakeFiles/c270_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/c270_app.dir/src/c270_usb.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/c270_app.dir/src/c270_usb.c.o -MF CMakeFiles/c270_app.dir/src/c270_usb.c.o.d -o CMakeFiles/c270_app.dir/src/c270_usb.c.o -c /home/duong/c270_driver/src/c270_usb.c
+CMakeFiles/c270_app.dir/src/c270_v4l2.c.o: CMakeFiles/c270_app.dir/flags.make
+CMakeFiles/c270_app.dir/src/c270_v4l2.c.o: /home/duong/c270_driver/src/c270_v4l2.c
+CMakeFiles/c270_app.dir/src/c270_v4l2.c.o: CMakeFiles/c270_app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/c270_app.dir/src/c270_v4l2.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/c270_app.dir/src/c270_v4l2.c.o -MF CMakeFiles/c270_app.dir/src/c270_v4l2.c.o.d -o CMakeFiles/c270_app.dir/src/c270_v4l2.c.o -c /home/duong/c270_driver/src/c270_v4l2.c
 
-CMakeFiles/c270_app.dir/src/c270_usb.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/c270_app.dir/src/c270_usb.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/duong/c270_driver/src/c270_usb.c > CMakeFiles/c270_app.dir/src/c270_usb.c.i
+CMakeFiles/c270_app.dir/src/c270_v4l2.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/c270_app.dir/src/c270_v4l2.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/duong/c270_driver/src/c270_v4l2.c > CMakeFiles/c270_app.dir/src/c270_v4l2.c.i
 
-CMakeFiles/c270_app.dir/src/c270_usb.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/c270_app.dir/src/c270_usb.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/duong/c270_driver/src/c270_usb.c -o CMakeFiles/c270_app.dir/src/c270_usb.c.s
-
-CMakeFiles/c270_app.dir/src/c270_uvc.c.o: CMakeFiles/c270_app.dir/flags.make
-CMakeFiles/c270_app.dir/src/c270_uvc.c.o: /home/duong/c270_driver/src/c270_uvc.c
-CMakeFiles/c270_app.dir/src/c270_uvc.c.o: CMakeFiles/c270_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/c270_app.dir/src/c270_uvc.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/c270_app.dir/src/c270_uvc.c.o -MF CMakeFiles/c270_app.dir/src/c270_uvc.c.o.d -o CMakeFiles/c270_app.dir/src/c270_uvc.c.o -c /home/duong/c270_driver/src/c270_uvc.c
-
-CMakeFiles/c270_app.dir/src/c270_uvc.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/c270_app.dir/src/c270_uvc.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/duong/c270_driver/src/c270_uvc.c > CMakeFiles/c270_app.dir/src/c270_uvc.c.i
-
-CMakeFiles/c270_app.dir/src/c270_uvc.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/c270_app.dir/src/c270_uvc.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/duong/c270_driver/src/c270_uvc.c -o CMakeFiles/c270_app.dir/src/c270_uvc.c.s
-
-CMakeFiles/c270_app.dir/src/c270_capture.c.o: CMakeFiles/c270_app.dir/flags.make
-CMakeFiles/c270_app.dir/src/c270_capture.c.o: /home/duong/c270_driver/src/c270_capture.c
-CMakeFiles/c270_app.dir/src/c270_capture.c.o: CMakeFiles/c270_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/c270_app.dir/src/c270_capture.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/c270_app.dir/src/c270_capture.c.o -MF CMakeFiles/c270_app.dir/src/c270_capture.c.o.d -o CMakeFiles/c270_app.dir/src/c270_capture.c.o -c /home/duong/c270_driver/src/c270_capture.c
-
-CMakeFiles/c270_app.dir/src/c270_capture.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/c270_app.dir/src/c270_capture.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/duong/c270_driver/src/c270_capture.c > CMakeFiles/c270_app.dir/src/c270_capture.c.i
-
-CMakeFiles/c270_app.dir/src/c270_capture.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/c270_app.dir/src/c270_capture.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/duong/c270_driver/src/c270_capture.c -o CMakeFiles/c270_app.dir/src/c270_capture.c.s
+CMakeFiles/c270_app.dir/src/c270_v4l2.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/c270_app.dir/src/c270_v4l2.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/duong/c270_driver/src/c270_v4l2.c -o CMakeFiles/c270_app.dir/src/c270_v4l2.c.s
 
 CMakeFiles/c270_app.dir/src/c270_display.c.o: CMakeFiles/c270_app.dir/flags.make
 CMakeFiles/c270_app.dir/src/c270_display.c.o: /home/duong/c270_driver/src/c270_display.c
 CMakeFiles/c270_app.dir/src/c270_display.c.o: CMakeFiles/c270_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/c270_app.dir/src/c270_display.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/c270_app.dir/src/c270_display.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/c270_app.dir/src/c270_display.c.o -MF CMakeFiles/c270_app.dir/src/c270_display.c.o.d -o CMakeFiles/c270_app.dir/src/c270_display.c.o -c /home/duong/c270_driver/src/c270_display.c
 
 CMakeFiles/c270_app.dir/src/c270_display.c.i: cmake_force
@@ -128,7 +100,7 @@ CMakeFiles/c270_app.dir/src/c270_display.c.s: cmake_force
 CMakeFiles/c270_app.dir/src/c270_stream.c.o: CMakeFiles/c270_app.dir/flags.make
 CMakeFiles/c270_app.dir/src/c270_stream.c.o: /home/duong/c270_driver/src/c270_stream.c
 CMakeFiles/c270_app.dir/src/c270_stream.c.o: CMakeFiles/c270_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/c270_app.dir/src/c270_stream.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/c270_app.dir/src/c270_stream.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/c270_app.dir/src/c270_stream.c.o -MF CMakeFiles/c270_app.dir/src/c270_stream.c.o.d -o CMakeFiles/c270_app.dir/src/c270_stream.c.o -c /home/duong/c270_driver/src/c270_stream.c
 
 CMakeFiles/c270_app.dir/src/c270_stream.c.i: cmake_force
@@ -139,24 +111,10 @@ CMakeFiles/c270_app.dir/src/c270_stream.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/c270_app.dir/src/c270_stream.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/duong/c270_driver/src/c270_stream.c -o CMakeFiles/c270_app.dir/src/c270_stream.c.s
 
-CMakeFiles/c270_app.dir/src/c270_hotplug.c.o: CMakeFiles/c270_app.dir/flags.make
-CMakeFiles/c270_app.dir/src/c270_hotplug.c.o: /home/duong/c270_driver/src/c270_hotplug.c
-CMakeFiles/c270_app.dir/src/c270_hotplug.c.o: CMakeFiles/c270_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/c270_app.dir/src/c270_hotplug.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/c270_app.dir/src/c270_hotplug.c.o -MF CMakeFiles/c270_app.dir/src/c270_hotplug.c.o.d -o CMakeFiles/c270_app.dir/src/c270_hotplug.c.o -c /home/duong/c270_driver/src/c270_hotplug.c
-
-CMakeFiles/c270_app.dir/src/c270_hotplug.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/c270_app.dir/src/c270_hotplug.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/duong/c270_driver/src/c270_hotplug.c > CMakeFiles/c270_app.dir/src/c270_hotplug.c.i
-
-CMakeFiles/c270_app.dir/src/c270_hotplug.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/c270_app.dir/src/c270_hotplug.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/duong/c270_driver/src/c270_hotplug.c -o CMakeFiles/c270_app.dir/src/c270_hotplug.c.s
-
 CMakeFiles/c270_app.dir/src/main.c.o: CMakeFiles/c270_app.dir/flags.make
 CMakeFiles/c270_app.dir/src/main.c.o: /home/duong/c270_driver/src/main.c
 CMakeFiles/c270_app.dir/src/main.c.o: CMakeFiles/c270_app.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/c270_app.dir/src/main.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/c270_app.dir/src/main.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/c270_app.dir/src/main.c.o -MF CMakeFiles/c270_app.dir/src/main.c.o.d -o CMakeFiles/c270_app.dir/src/main.c.o -c /home/duong/c270_driver/src/main.c
 
 CMakeFiles/c270_app.dir/src/main.c.i: cmake_force
@@ -169,27 +127,21 @@ CMakeFiles/c270_app.dir/src/main.c.s: cmake_force
 
 # Object files for target c270_app
 c270_app_OBJECTS = \
-"CMakeFiles/c270_app.dir/src/c270_usb.c.o" \
-"CMakeFiles/c270_app.dir/src/c270_uvc.c.o" \
-"CMakeFiles/c270_app.dir/src/c270_capture.c.o" \
+"CMakeFiles/c270_app.dir/src/c270_v4l2.c.o" \
 "CMakeFiles/c270_app.dir/src/c270_display.c.o" \
 "CMakeFiles/c270_app.dir/src/c270_stream.c.o" \
-"CMakeFiles/c270_app.dir/src/c270_hotplug.c.o" \
 "CMakeFiles/c270_app.dir/src/main.c.o"
 
 # External object files for target c270_app
 c270_app_EXTERNAL_OBJECTS =
 
-c270_app: CMakeFiles/c270_app.dir/src/c270_usb.c.o
-c270_app: CMakeFiles/c270_app.dir/src/c270_uvc.c.o
-c270_app: CMakeFiles/c270_app.dir/src/c270_capture.c.o
+c270_app: CMakeFiles/c270_app.dir/src/c270_v4l2.c.o
 c270_app: CMakeFiles/c270_app.dir/src/c270_display.c.o
 c270_app: CMakeFiles/c270_app.dir/src/c270_stream.c.o
-c270_app: CMakeFiles/c270_app.dir/src/c270_hotplug.c.o
 c270_app: CMakeFiles/c270_app.dir/src/main.c.o
 c270_app: CMakeFiles/c270_app.dir/build.make
 c270_app: CMakeFiles/c270_app.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable c270_app"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/duong/c270_driver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable c270_app"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/c270_app.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
