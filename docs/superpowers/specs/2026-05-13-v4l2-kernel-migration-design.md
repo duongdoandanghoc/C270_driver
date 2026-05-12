@@ -36,6 +36,195 @@ USB Camera → kernel URB (isoc 8000 pkt/s)
 | **Output MJPEG thô** | Kernel module chỉ gom MJPEG frame, KHÔNG decode. Decode ở userspace (GStreamer `jpegdec`) |
 | **IRQ-safe** | `mycam_urb_complete()` chạy trong softirq — không được sleep, không mutex, không `kmalloc(GFP_KERNEL)` |
 | **V4L2 controls riêng** | Streaming pipeline trước, controls (brightness/exposure) là task phụ sau |
+| **Documentation bắt buộc** | Mỗi file có header block (cấu trúc + pipeline). Mỗi hàm có block comment (tác dụng, tác động, context) |
+
+---
+
+## 2.1. Quy Tắc Documentation
+
+### File Header — Bắt buộc ở đầu mỗi file
+
+Mỗi file `.c` phải bắt đầu bằng block comment mô tả:
+1. **Tên module** và vai trò trong hệ thống
+2. **Cấu trúc file** — liệt kê các section/function chính
+3. **Vị trí trong pipeline** — file này nằm ở đâu trong luồng data
+
+**Ví dụ cho kernel module `mycam_urb.c`:**
+```c
+/*
+ * mycam_urb.c — URB Management & UVC Header Parsing
+ *
+ * Module này quản lý toàn bộ giao tiếp USB isochronous với camera:
+ * nhận raw packets từ USB Host Controller, parse UVC payload header,
+ * tích lũy payload thành MJPEG frame hoàn chỉnh, rồi deliver qua VB2.
+ *
+ * ══════════════════════════════════════════════════════════════
+ * CẤU TRÚC FILE
+ * ══════════════════════════════════════════════════════════════
+ *   1. mycam_urb_alloc()      — Cấp phát URB pool + transfer buffers
+ *   2. mycam_urb_submit()     — Submit URBs lên USB HC
+ *   3. mycam_urb_complete()   — ISR callback: parse UVC header, gom payload
+ *   4. mycam_frame_done()     — Deliver frame hoàn chỉnh → VB2 buffer
+ *   5. mycam_urb_kill()       — Hủy tất cả URBs đang pending
+ *   6. mycam_urb_free()       — Giải phóng URB pool
+ *
+ * ══════════════════════════════════════════════════════════════
+ * VỊ TRÍ TRONG PIPELINE
+ * ══════════════════════════════════════════════════════════════
+ *
+ *   USB Camera (C270)
+ *       │  isochronous packets (8000 packets/giây)
+ *       ▼
+ *   ┌─────────────────────────────┐
+ *   │  USB Host Controller (HW)   │
+ *   └──────────┬──────────────────┘
+ *              │  URB completion interrupt
+ *              ▼
+ *   ┌─────────────────────────────┐
+ *   │  mycam_urb_complete()  ◄────│── FILE NÀY (softirq context)
+ *   │    parse UVC header         │
+ *   │    FID toggle → new frame   │
+ *   │    accumulate payload       │
+ *   │    EOF → mycam_frame_done() │
+ *   └──────────┬──────────────────┘
+ *              │  vb2_buffer_done()
+ *              ▼
+ *   ┌─────────────────────────────┐
+ *   │  VB2 Queue (mycam_vb2.c)   │
+ *   │    → done_list              │
+ *   │    → wake up poll/read      │
+ *   └──────────┬──────────────────┘
+ *              │  VIDIOC_DQBUF
+ *              ▼
+ *   ┌─────────────────────────────┐
+ *   │  Userspace (GStreamer)       │
+ *   │    v4l2src → jpegdec → ...  │
+ *   └─────────────────────────────┘
+ */
+```
+
+**Ví dụ cho userspace `c270_v4l2_capture.c`:**
+```c
+/*
+ * c270_v4l2_capture.c — V4L2 Capture via /dev/videoX
+ *
+ * Module này mở V4L2 device, set format MJPEG 640x480, quản lý
+ * MMAP buffers qua ioctl, và chạy capture loop DQBUF/QBUF.
+ *
+ * ══════════════════════════════════════════════════════════════
+ * CẤU TRÚC FILE
+ * ══════════════════════════════════════════════════════════════
+ *   1. v4l2_capture_open()    — Mở /dev/videoX, set MJPEG format
+ *   2. v4l2_capture_init()    — REQBUFS + mmap + QBUF
+ *   3. v4l2_capture_start()   — STREAMON
+ *   4. v4l2_capture_read()    — DQBUF → lấy MJPEG frame → QBUF
+ *   5. v4l2_capture_stop()    — STREAMOFF
+ *   6. v4l2_capture_close()   — munmap + close fd
+ *
+ * ══════════════════════════════════════════════════════════════
+ * VỊ TRÍ TRONG PIPELINE
+ * ══════════════════════════════════════════════════════════════
+ *
+ *   /dev/videoX (kernel driver: uvcvideo hoặc mycam.ko)
+ *       │  MJPEG frames qua V4L2 MMAP
+ *       ▼
+ *   ┌─────────────────────────────┐
+ *   │  c270_v4l2_capture.c  ◄─────│── FILE NÀY
+ *   │    DQBUF → MJPEG raw data   │
+ *   │    callback → stream/display │
+ *   └──────────┬──────────────────┘
+ *              │  on_frame(mjpeg_data, size)
+ *              ▼
+ *   ┌─────────────────────────────┐
+ *   │  c270_stream.c (RTSP)       │
+ *   │  c270_display.c (SDL2)      │
+ *   └─────────────────────────────┘
+ */
+```
+
+### Function Comment — Bắt buộc trước mỗi hàm
+
+Mỗi hàm (public hoặc static) phải có block comment gồm:
+1. **Tác dụng** — hàm này làm gì
+2. **Tác động** — ảnh hưởng tới state nào, side effects gì
+3. **Context** — chạy trong context nào (process/IRQ/softirq), có được sleep không
+4. **Parameters** — giải thích tham số nếu không rõ ràng
+5. **Return** — giá trị trả về và ý nghĩa
+
+**Ví dụ:**
+```c
+/*
+ * mycam_urb_complete — URB completion callback
+ *
+ * TÁC DỤNG:
+ *   Được gọi bởi USB HC khi một isochronous transfer hoàn thành.
+ *   Duyệt từng iso packet, parse UVC payload header, tích lũy
+ *   payload data vào frame_acc. Khi phát hiện frame boundary
+ *   (FID toggle hoặc EOF), gọi mycam_frame_done() để deliver.
+ *
+ * TÁC ĐỘNG:
+ *   - Ghi vào cam->frame_acc (data, size, last_fid)
+ *   - Gọi mycam_frame_done() → lấy buffer từ buf_list → vb2_buffer_done()
+ *   - Re-submit URB (usb_submit_urb GFP_ATOMIC)
+ *
+ * CONTEXT:
+ *   Softirq/interrupt — KHÔNG ĐƯỢC sleep, KHÔNG mutex,
+ *   KHÔNG kmalloc(GFP_KERNEL). Chỉ dùng spinlock_irqsave.
+ *
+ * @urb: URB đã hoàn thành, chứa iso packet descriptors + buffer
+ */
+static void mycam_urb_complete(struct urb *urb)
+```
+
+```c
+/*
+ * mycam_frame_done — Deliver một MJPEG frame hoàn chỉnh tới VB2
+ *
+ * TÁC DỤNG:
+ *   Lấy buffer đầu tiên từ buf_list (queued bởi userspace QBUF),
+ *   copy dữ liệu từ frame_acc vào VB2 buffer, set timestamp +
+ *   sequence number, rồi gọi vb2_buffer_done(DONE) để đánh thức
+ *   userspace đang block trên DQBUF/poll.
+ *
+ * TÁC ĐỘNG:
+ *   - Lấy + xóa 1 entry từ cam->buf_list (spinlock protected)
+ *   - memcpy frame_acc.data → VB2 plane buffer
+ *   - vb2_buffer_done() → buffer chuyển sang done_list
+ *   - Reset frame_acc (size=0, has_data=false)
+ *   - Nếu buf_list rỗng: drop frame (không có buffer để chứa)
+ *
+ * CONTEXT:
+ *   Gọi từ mycam_urb_complete() — softirq, KHÔNG được sleep.
+ *
+ * @cam: device context chứa buf_list và frame_acc
+ */
+static void mycam_frame_done(struct mycam_device *cam)
+```
+
+```c
+/*
+ * v4l2_capture_read — Dequeue một MJPEG frame từ kernel
+ *
+ * TÁC DỤNG:
+ *   Gọi VIDIOC_DQBUF để lấy buffer chứa MJPEG frame hoàn chỉnh
+ *   từ kernel driver. Buffer đã được mmap nên data có thể đọc
+ *   trực tiếp qua pointer. Sau khi xử lý xong, gọi VIDIOC_QBUF
+ *   để trả buffer lại cho kernel.
+ *
+ * TÁC ĐỘNG:
+ *   - Block cho đến khi có frame (hoặc timeout)
+ *   - Frame data nằm tại buffers[buf.index], kích thước buf.bytesused
+ *   - Gọi on_frame callback → stream_push_frame / display_show_frame
+ *   - Re-enqueue buffer → kernel có thể ghi frame tiếp theo vào
+ *
+ * CONTEXT:
+ *   Process context (main thread capture loop). Có thể sleep (block trên ioctl).
+ *
+ * @ctx: V4L2 capture context chứa fd, buffers, callback
+ * @return: 0 thành công, -1 lỗi hoặc timeout
+ */
+int v4l2_capture_read(V4L2CaptureContext *ctx)
+```
 
 ---
 
