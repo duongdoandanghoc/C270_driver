@@ -1,0 +1,12 @@
+# Kbuild — kernel build rules cho mycam.ko
+#
+# Được include bởi kernel build system khi chạy make -C KDIR M=$(PWD)
+# Liệt kê tất cả object files tạo nên module mycam.ko
+
+obj-m := mycam.o
+
+mycam-objs := \
+	mycam_main.o  \
+	mycam_video.o \
+	mycam_vb2.o   \
+	mycam_urb.o
