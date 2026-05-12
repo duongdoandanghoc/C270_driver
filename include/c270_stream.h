@@ -1,8 +1,8 @@
 #ifndef C270_STREAM_H
 #define C270_STREAM_H
 
-#include "c270_capture.h"
 #include <stdint.h>
+#include <stddef.h>
 
 typedef struct {
     void        *rtsp_server;   /* GstRTSPServer* */
@@ -24,7 +24,13 @@ typedef struct {
 int  stream_init(StreamContext *ctx, int port, const char *mount_point,
                  int width, int height, int fps,
                  const char *codec, const char *password);
-void stream_push_frame(StreamContext *ctx, const DecodedFrame *frame);
+/* Push decoded RGB24 frame (legacy, kept for compatibility) */
+struct DecodedFrame;
+void stream_push_frame(StreamContext *ctx, const struct DecodedFrame *frame);
+
+/* Push raw MJPEG data — no decode needed, GStreamer pipeline handles it */
+void stream_push_mjpeg(StreamContext *ctx, const uint8_t *data, uint32_t size);
+
 void stream_stop(StreamContext *ctx);
 void stream_free(StreamContext *ctx);
 

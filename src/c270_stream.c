@@ -1,4 +1,5 @@
 #include "c270_stream.h"
+#include "c270_capture.h"  /* for DecodedFrame in legacy stream_push_frame */
 #include <gst/gst.h>
 #include <gst/app/gstappsrc.h>
 #include <gst/rtsp-server/rtsp-server.h>
@@ -63,9 +64,8 @@ static void media_configure_cb(GstRTSPMediaFactory *factory,
         return;
     }
 
-    /* Set caps cho appsrc */
-    GstCaps *caps = gst_caps_new_simple("video/x-raw",
-        "format",    G_TYPE_STRING,  "RGB",
+    /* Set caps cho appsrc — MJPEG raw input */
+    GstCaps *caps = gst_caps_new_simple("image/jpeg",
         "width",     G_TYPE_INT,     fdata->width,
         "height",    G_TYPE_INT,     fdata->height,
         "framerate", GST_TYPE_FRACTION, fdata->fps, 1,
@@ -142,6 +142,7 @@ int stream_init(StreamContext *ctx, int port, const char *mount_point,
         if (strcmp(ctx->codec, "h265") == 0) {
             snprintf(pipeline, sizeof(pipeline),
                 "( appsrc name=vsrc ! "
+                "jpegdec ! "
                 "videoconvert ! "
                 "video/x-raw,format=I420 ! "
                 "x265enc tune=zerolatency bitrate=1000 "
@@ -150,6 +151,7 @@ int stream_init(StreamContext *ctx, int port, const char *mount_point,
         } else {
             snprintf(pipeline, sizeof(pipeline),
                 "( appsrc name=vsrc ! "
+                "jpegdec ! "
                 "videoconvert ! "
                 "video/x-raw,format=I420 ! "
                 "x264enc tune=zerolatency bitrate=1000 "
@@ -180,6 +182,7 @@ int stream_init(StreamContext *ctx, int port, const char *mount_point,
         if (strcmp(ctx->codec, "h265") == 0) {
             snprintf(pipeline, sizeof(pipeline),
                 "( appsrc name=vsrc ! "
+                "jpegdec ! "
                 "videoconvert ! "
                 "video/x-raw,format=I420 ! "
                 "x265enc tune=zerolatency bitrate=1000 "
@@ -188,6 +191,7 @@ int stream_init(StreamContext *ctx, int port, const char *mount_point,
         } else {
             snprintf(pipeline, sizeof(pipeline),
                 "( appsrc name=vsrc ! "
+                "jpegdec ! "
                 "videoconvert ! "
                 "video/x-raw,format=I420 ! "
                 "x264enc tune=zerolatency bitrate=1000 "
@@ -255,6 +259,48 @@ void stream_push_frame(StreamContext *ctx, const DecodedFrame *frame) {
         } else {
             fprintf(stderr, "[STREAM] push-buffer error: %d\n", ret);
         }
+    }
+}
+
+/*
+ * stream_push_mjpeg — Push raw MJPEG frame vào GStreamer pipeline
+ *
+ * TÁC DỤNG:
+ *   Wrap MJPEG data vào GstBuffer, push vào appsrc.
+ *   Pipeline tự decode MJPEG → encode H264/H265 → RTSP.
+ *
+ * TÁC ĐỘNG:
+ *   - GStreamer pipeline nhận frame
+ *   - Nếu pipeline teardown (client disconnect): appsrc = NULL
+ *
+ * CONTEXT:
+ *   Process context (capture thread gọi)
+ *
+ * @ctx:  stream context
+ * @data: MJPEG raw data
+ * @size: kích thước frame (bytes)
+ */
+void stream_push_mjpeg(StreamContext *ctx, const uint8_t *data, uint32_t size) {
+    if (!ctx->is_running || !ctx->appsrc || size == 0) return;
+
+    GstElement *appsrc = (GstElement *)ctx->appsrc;
+
+    GstBuffer *buf = gst_buffer_new_allocate(NULL, size, NULL);
+    GstMapInfo map;
+    gst_buffer_map(buf, &map, GST_MAP_WRITE);
+    memcpy(map.data, data, size);
+    gst_buffer_unmap(buf, &map);
+
+    GstFlowReturn ret;
+    g_signal_emit_by_name(appsrc, "push-buffer", buf, &ret);
+    gst_buffer_unref(buf);
+
+    if (ret != GST_FLOW_OK) {
+        ctx->appsrc = NULL;
+        if (ret == GST_FLOW_FLUSHING)
+            printf("[STREAM] Pipeline flushing — waiting for new client\n");
+        else
+            fprintf(stderr, "[STREAM] push-buffer error: %d\n", ret);
     }
 }
 
