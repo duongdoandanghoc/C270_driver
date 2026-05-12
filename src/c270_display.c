@@ -1,7 +1,11 @@
 #include "c270_display.h"
+#include "c270_capture.h"  /* for DecodedFrame in legacy display_show_frame */
 #include <SDL2/SDL.h>
+#include <jpeglib.h>
+#include <setjmp.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <time.h>
 
 int display_init(DisplayContext *disp, int width, int height,
@@ -105,6 +109,110 @@ void display_show_frame(DisplayContext *disp,
     SDL_RenderPresent(renderer);
 }
 
+/* ── Internal: JPEG error handler for display decode ── */
+typedef struct {
+    struct jpeg_error_mgr pub;
+    jmp_buf               setjmp_buf;
+} DispJpegError;
+
+static void disp_jpeg_error_exit(j_common_ptr cinfo) {
+    DispJpegError *err = (DispJpegError *)cinfo->err;
+    longjmp(err->setjmp_buf, 1);
+}
+
+static void disp_jpeg_suppress(j_common_ptr cinfo) { (void)cinfo; }
+
+/*
+ * display_show_mjpeg — Show MJPEG frame (decode + render)
+ *
+ * TÁC DỤNG:
+ *   Decode MJPEG data → RGB24 via libjpeg, rồi upload vào
+ *   SDL2 texture và render giống display_show_frame.
+ *
+ * TÁC ĐỘNG:
+ *   - Allocate/reuse internal decode_buf (disp->decode_buf)
+ *   - Update SDL texture + window title overlay
+ *
+ * CONTEXT:
+ *   Process context (main thread)
+ */
+void display_show_mjpeg(DisplayContext *disp,
+                        const uint8_t *jpeg_data, uint32_t jpeg_size,
+                        float fps, const char *camera_id)
+{
+    if (!disp->is_init || !jpeg_data || jpeg_size == 0) return;
+
+    /* Allocate decode buffer if needed */
+    size_t rgb_size = (size_t)(disp->width * disp->height * 3);
+    if (!disp->decode_buf) {
+        disp->decode_buf = malloc(rgb_size);
+        if (!disp->decode_buf) return;
+    }
+
+    /* Decode MJPEG → RGB24 */
+    struct jpeg_decompress_struct cinfo;
+    DispJpegError jerr;
+    cinfo.err = jpeg_std_error(&jerr.pub);
+    jerr.pub.error_exit = disp_jpeg_error_exit;
+    jerr.pub.output_message = disp_jpeg_suppress;
+
+    if (setjmp(jerr.setjmp_buf)) {
+        jpeg_destroy_decompress(&cinfo);
+        return;  /* corrupt frame, skip */
+    }
+
+    jpeg_create_decompress(&cinfo);
+    jpeg_mem_src(&cinfo, (unsigned char *)jpeg_data, jpeg_size);
+
+    if (jpeg_read_header(&cinfo, TRUE) != JPEG_HEADER_OK) {
+        jpeg_destroy_decompress(&cinfo);
+        return;
+    }
+
+    cinfo.out_color_space = JCS_RGB;
+    jpeg_start_decompress(&cinfo);
+
+    int w = (int)cinfo.output_width;
+    int h = (int)cinfo.output_height;
+    int stride = w * 3;
+
+    JSAMPROW row_ptr[1];
+    while (cinfo.output_scanline < cinfo.output_height) {
+        row_ptr[0] = disp->decode_buf + cinfo.output_scanline * stride;
+        jpeg_read_scanlines(&cinfo, row_ptr, 1);
+    }
+
+    jpeg_finish_decompress(&cinfo);
+    jpeg_destroy_decompress(&cinfo);
+
+    /* Render via SDL2 */
+    SDL_Renderer *renderer = (SDL_Renderer *)disp->sdl_renderer;
+    SDL_Texture  *texture  = (SDL_Texture  *)disp->sdl_texture;
+
+    SDL_UpdateTexture(texture, NULL, disp->decode_buf, stride);
+    SDL_RenderClear(renderer);
+
+    SDL_Rect dst = {0, 0, 0, 0};
+    SDL_GetWindowSize((SDL_Window*)disp->sdl_window, &dst.w, &dst.h);
+    SDL_RenderCopy(renderer, texture, NULL, &dst);
+
+    /* Overlay */
+    char title_buf[128];
+    time_t t = time(NULL);
+    struct tm *tm_info = localtime(&t);
+    char time_str[32];
+    strftime(time_str, sizeof(time_str), "%H:%M:%S", tm_info);
+    snprintf(title_buf, sizeof(title_buf),
+             "C270 V4L2 | %s | FPS: %.1f | %s", camera_id, fps, time_str);
+    SDL_SetWindowTitle((SDL_Window *)disp->sdl_window, title_buf);
+
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 160);
+    SDL_Rect bar = {0, 0, 320, 20};
+    SDL_RenderFillRect(renderer, &bar);
+    SDL_RenderPresent(renderer);
+}
+
 int display_poll_events(DisplayContext *disp) {
     (void)disp;
     SDL_Event event;
@@ -121,6 +229,8 @@ int display_poll_events(DisplayContext *disp) {
 
 void display_free(DisplayContext *disp) {
     if (!disp->is_init) return;
+    free(disp->decode_buf);
+    disp->decode_buf = NULL;
     if (disp->sdl_texture)  SDL_DestroyTexture((SDL_Texture *)disp->sdl_texture);
     if (disp->sdl_renderer) SDL_DestroyRenderer((SDL_Renderer *)disp->sdl_renderer);
     if (disp->sdl_window)   SDL_DestroyWindow((SDL_Window *)disp->sdl_window);
