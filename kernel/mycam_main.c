@@ -347,12 +347,21 @@ static int mycam_probe(struct usb_interface *intf,
 		goto err_v4l2;
 	}
 
+	/* Init V4L2 controls (brightness, contrast, exposure, etc.) */
+	ret = mycam_ctrl_init(cam);
+	if (ret) {
+		dev_err(&udev->dev, "ctrl init failed: %d\n", ret);
+		goto err_video;
+	}
+
 	usb_set_intfdata(intf, cam);
 
 	dev_info(&udev->dev, "mycam: registered as /dev/video%d\n",
 		 cam->vdev.num);
 	return 0;
 
+err_video:
+	mycam_video_cleanup(cam);
 err_v4l2:
 	v4l2_device_unregister(&cam->v4l2_dev);
 err_free:
@@ -389,6 +398,7 @@ static void mycam_disconnect(struct usb_interface *intf)
 	/* Prevent new URB completions delivering frames */
 	cam->streaming = false;
 
+	mycam_ctrl_cleanup(cam);
 	mycam_video_cleanup(cam);
 	v4l2_device_unregister(&cam->v4l2_dev);
 

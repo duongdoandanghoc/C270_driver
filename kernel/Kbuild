@@ -9,4 +9,5 @@ mycam-objs := \
 	mycam_main.o  \
 	mycam_video.o \
 	mycam_vb2.o   \
-	mycam_urb.o
+	mycam_urb.o   \
+	mycam_ctrl.o

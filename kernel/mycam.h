@@ -135,6 +135,7 @@ struct mycam_device {
 	/* V4L2 subsystem */
 	struct v4l2_device       v4l2_dev;
 	struct video_device      vdev;       /* /dev/videoX */
+	struct v4l2_ctrl_handler ctrl_handler; /* V4L2 controls */
 	struct mutex             vdev_lock;  /* serialize v4l2 ops (non-IRQ) */
 
 	/* VB2 queue */
@@ -177,6 +178,10 @@ int  mycam_vb2_init(struct mycam_device *cam);
 /* mycam_urb.c */
 int  mycam_urb_alloc_and_submit(struct mycam_device *cam);
 void mycam_urb_kill_and_free(struct mycam_device *cam);
+
+/* mycam_ctrl.c */
+int  mycam_ctrl_init(struct mycam_device *cam);
+void mycam_ctrl_cleanup(struct mycam_device *cam);
 
 /* UVC helpers (in mycam_main.c or mycam_urb.c) */
 int  mycam_uvc_probe_commit(struct mycam_device *cam,
