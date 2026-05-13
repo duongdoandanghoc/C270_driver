@@ -33,15 +33,18 @@ void display_show_frame(DisplayContext *disp,
                         float fps,
                         const char *camera_id);
 
-/* Show MJPEG frame (decodes internally via libjpeg) */
+/* Show MJPEG frame (decodes internally via libjpeg)
+ * uptime_secs: tổng thời gian camera đã hoạt động (giây), hiện góc dưới phải */
 void display_show_mjpeg(DisplayContext *disp,
                         const uint8_t *jpeg_data, uint32_t jpeg_size,
-                        float fps, const char *camera_id);
+                        float fps, const char *camera_id,
+                        uint32_t uptime_secs);
 
 int  display_poll_events(DisplayContext *disp);  /* return 0=ok, -1=quit */
 void display_free(DisplayContext *disp);
 
-/* Show status overlay (disconnect/reconnect messages) */
+/* Show status overlay (disconnect/reconnect messages)
+ * uptime_secs: thời gian tích lũy (dừng khi disconnect) */
 typedef enum {
     DISP_STATUS_DISCONNECTED,   /* camera rút ra — nền đỏ */
     DISP_STATUS_RECONNECTING,   /* đang reconnect — nền cam */
@@ -49,6 +52,6 @@ typedef enum {
     DISP_STATUS_ERROR            /* lỗi — nền đỏ đậm */
 } DisplayStatusType;
 void display_show_status(DisplayContext *disp, DisplayStatusType type,
-                         const char *message);
+                         const char *message, uint32_t uptime_secs);
 
 #endif /* C270_DISPLAY_H */

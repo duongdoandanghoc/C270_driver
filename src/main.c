@@ -243,7 +243,7 @@ int main(int argc, char *argv[]) {
     /* ── Step 3: Open V4L2 device ── */
     if (!g_app.no_display) {
         display_show_status(&g_display, DISP_STATUS_RECONNECTING,
-                            "Đang kết nối camera...");
+                            "Dang ket noi camera...", 0);
     }
 
     if (try_open_device() < 0) {
@@ -251,13 +251,13 @@ int main(int argc, char *argv[]) {
                 g_app.dev_path);
         if (!g_app.no_display) {
             display_show_status(&g_display, DISP_STATUS_DISCONNECTED,
-                                "Camera chưa được kết nối");
+                                "Camera chua duoc ket noi", 0);
         }
     } else {
         printf("[MAIN] Camera kết nối thành công!\n");
         if (!g_app.no_display) {
             display_show_status(&g_display, DISP_STATUS_CONNECTED,
-                                "Camera đã kết nối");
+                                "Camera da ket noi", 0);
             /* Show green status briefly */
             uint64_t show_until = app_now_ms() + CONNECTED_SHOW_MS;
             while (app_now_ms() < show_until && g_running) {
@@ -278,6 +278,15 @@ int main(int argc, char *argv[]) {
     int           consecutive_errors = 0;
     int           total_reconnects = 0;
 
+    /* ── Uptime tracking ──
+     * uptime_accumulated_ms: tổng thời gian camera đã hoạt động (ms)
+     * uptime_connect_time:   timestamp lúc connect gần nhất
+     * Khi disconnect: cộng (now - connect_time) vào accumulated
+     * Khi reconnect:  lưu connect_time mới
+     */
+    uint64_t      uptime_accumulated_ms = 0;
+    uint64_t      uptime_connect_time = camera_connected ? app_now_ms() : 0;
+
     while (g_running) {
         /* ── Camera disconnected: show status + try reconnect ── */
         if (!camera_connected) {
@@ -296,7 +305,8 @@ int main(int argc, char *argv[]) {
                 printf("[MAIN] Đang thử kết nối lại camera...\n");
                 if (!g_app.no_display) {
                     display_show_status(&g_display, DISP_STATUS_RECONNECTING,
-                                        "Đang kết nối lại camera...");
+                                        "Dang ket noi lai camera...",
+                                        (uint32_t)(uptime_accumulated_ms / 1000));
                 }
 
                 if (try_open_device() == 0) {
@@ -304,14 +314,16 @@ int main(int argc, char *argv[]) {
                     camera_connected = 1;
                     consecutive_errors = 0;
                     total_reconnects++;
+                    uptime_connect_time = app_now_ms(); /* resume timer */
 
                     char msg[128];
                     snprintf(msg, sizeof(msg),
-                             "Camera đã kết nối lại! (lần %d)", total_reconnects);
+                             "Camera da ket noi lai! (lan %d)", total_reconnects);
                     printf("[MAIN] %s\n", msg);
 
                     if (!g_app.no_display) {
-                        display_show_status(&g_display, DISP_STATUS_CONNECTED, msg);
+                        display_show_status(&g_display, DISP_STATUS_CONNECTED, msg,
+                                            (uint32_t)(uptime_accumulated_ms / 1000));
                         /* Show green briefly */
                         uint64_t show_until = app_now_ms() + CONNECTED_SHOW_MS;
                         while (app_now_ms() < show_until && g_running) {
@@ -367,9 +379,14 @@ int main(int argc, char *argv[]) {
             if (!g_app.no_stream)
                 stream_push_mjpeg(&g_stream, mjpeg_data, mjpeg_size);
 
-            if (!g_app.no_display)
+            if (!g_app.no_display) {
+                /* Compute live uptime */
+                uint64_t live_uptime_ms = uptime_accumulated_ms +
+                    (app_now_ms() - uptime_connect_time);
                 display_show_mjpeg(&g_display, mjpeg_data, mjpeg_size,
-                                   fps, "C270-V4L2");
+                                   fps, "C270-V4L2",
+                                   (uint32_t)(live_uptime_ms / 1000));
+            }
         } else if (ret == -1) {
             consecutive_errors++;
             if (consecutive_errors >= 5) {
@@ -392,13 +409,21 @@ int main(int argc, char *argv[]) {
 
         v4l2_device_stop(&g_v4l2);
         v4l2_device_close(&g_v4l2);
+
+        /* Pause uptime: save accumulated time */
+        if (uptime_connect_time > 0) {
+            uptime_accumulated_ms += (app_now_ms() - uptime_connect_time);
+            uptime_connect_time = 0;
+        }
+
         camera_connected = 0;
         consecutive_errors = 0;
         last_reconnect_attempt = 0;  /* try immediately next loop */
 
         if (!g_app.no_display) {
             display_show_status(&g_display, DISP_STATUS_DISCONNECTED,
-                                "Camera đã bị rút! Chờ kết nối lại...");
+                                "Camera da bi rut! Cho ket noi lai...",
+                                (uint32_t)(uptime_accumulated_ms / 1000));
         }
     }
 

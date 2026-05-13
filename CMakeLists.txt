@@ -9,6 +9,7 @@ find_package(PkgConfig REQUIRED)
 # libusb removed — using V4L2 instead
 pkg_check_modules(LIBJPEG REQUIRED libjpeg)
 pkg_check_modules(SDL2 REQUIRED sdl2)
+pkg_check_modules(SDL2_TTF REQUIRED SDL2_ttf)
 pkg_check_modules(GST REQUIRED gstreamer-1.0)
 pkg_check_modules(GST_APP REQUIRED gstreamer-app-1.0)
 pkg_check_modules(GST_RTSP REQUIRED gstreamer-rtsp-server-1.0)
@@ -17,6 +18,7 @@ include_directories(
     include
     ${LIBJPEG_INCLUDE_DIRS}
     ${SDL2_INCLUDE_DIRS}
+    ${SDL2_TTF_INCLUDE_DIRS}
     ${GST_INCLUDE_DIRS}
     ${GST_APP_INCLUDE_DIRS}
     ${GST_RTSP_INCLUDE_DIRS}
@@ -37,6 +39,7 @@ add_executable(c270_app
 target_link_libraries(c270_app
     ${LIBJPEG_LIBRARIES}
     ${SDL2_LIBRARIES}
+    ${SDL2_TTF_LIBRARIES}
     ${GST_LIBRARIES}
     ${GST_APP_LIBRARIES}
     ${GST_RTSP_LIBRARIES}
