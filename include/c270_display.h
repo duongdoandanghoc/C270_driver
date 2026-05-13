@@ -1,9 +1,17 @@
 #ifndef C270_DISPLAY_H
 #define C270_DISPLAY_H
 
-#include "c270_capture.h"  /* for DecodedFrame typedef (legacy) */
 #include <stdint.h>
 #include <stddef.h>
+
+/* DecodedFrame — legacy struct used by display_show_frame (backward compat) */
+typedef struct {
+    uint8_t  *pixels;      /* RGB24 data, width*height*3 bytes */
+    int       width;
+    int       height;
+    uint64_t  timestamp_ms;
+    uint32_t  frame_number;
+} DecodedFrame;
 
 typedef struct {
     void    *sdl_window;    /* SDL_Window*  — void* để tránh include SDL2 ở đây */

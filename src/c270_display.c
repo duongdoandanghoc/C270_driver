@@ -1,5 +1,4 @@
 #include "c270_display.h"
-#include "c270_capture.h"  /* for DecodedFrame in legacy display_show_frame */
 #include <SDL2/SDL.h>
 #include <jpeglib.h>
 #include <setjmp.h>

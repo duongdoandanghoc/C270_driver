@@ -1,1 +1,0 @@
-/usr/bin/cc -Wall -Wextra -g -Wall -Wextra -g CMakeFiles/test_step4_display.dir/tools/test_step4_display.c.o CMakeFiles/test_step4_display.dir/src/c270_usb.c.o CMakeFiles/test_step4_display.dir/src/c270_uvc.c.o CMakeFiles/test_step4_display.dir/src/c270_capture.c.o CMakeFiles/test_step4_display.dir/src/c270_display.c.o -o test_step4_display  -lusb-1.0 -ljpeg -lSDL2 -lpthread 

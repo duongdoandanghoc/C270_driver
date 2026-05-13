@@ -1,5 +1,4 @@
 #include "c270_stream.h"
-#include "c270_capture.h"  /* for DecodedFrame in legacy stream_push_frame */
 #include <gst/gst.h>
 #include <gst/app/gstappsrc.h>
 #include <gst/rtsp-server/rtsp-server.h>

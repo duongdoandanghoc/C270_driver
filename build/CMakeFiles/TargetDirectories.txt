@@ -1,3 +1,0 @@
-/home/duong/c270_driver/build/CMakeFiles/c270_app.dir
-/home/duong/c270_driver/build/CMakeFiles/edit_cache.dir
-/home/duong/c270_driver/build/CMakeFiles/rebuild_cache.dir

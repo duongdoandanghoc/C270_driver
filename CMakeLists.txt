@@ -42,9 +42,3 @@ target_link_libraries(c270_app
     ${GST_RTSP_LIBRARIES}
     pthread
 )
-
-# ── Legacy test tools (still reference libusb — kept for reference) ──
-# Uncomment if you need to build old test tools:
-# pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
-# add_executable(test_step1_usb tools/test_step1_usb.c src/c270_usb.c)
-# target_link_libraries(test_step1_usb ${LIBUSB_LIBRARIES})

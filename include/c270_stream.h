@@ -1,6 +1,6 @@
 #ifndef C270_STREAM_H
 #define C270_STREAM_H
-#include "c270_capture.h"  /* for DecodedFrame typedef (legacy) */
+#include "c270_display.h"  /* for DecodedFrame typedef */
 #include <stdint.h>
 #include <stddef.h>
 
