@@ -1,7 +1,7 @@
 # C270 Driver — Ghi Chú Phiên Làm Việc
 
-**Cập nhật lần cuối:** 2026-05-06 03:00 AM
-**Trạng thái:** MJPEG 640x480 hoạt động, tất cả requirements đã implement
+**Cập nhật lần cuối:** 2026-05-13 11:30 AM
+**Trạng thái:** Kernel module mycam.ko hoạt động, legacy libusb đã xóa
 
 ---
 
@@ -9,144 +9,121 @@
 
 ### ✅ Đã hoàn thành
 
-| Tính năng | Trạng thái |
+| Tính năng | Trạng thái | Ghi chú |
+|---|---|---|
+| **Kernel module mycam.ko** | ✅ 11/11 tests | Custom USB/V4L2/VB2/URB driver |
+| Secure Boot signing | ✅ | MOK key enrolled, auto-sign in Makefile |
+| /dev/videoX registration | ✅ | V4L2 device, MJPEG 640x480 |
+| 30fps MJPEG streaming | ✅ | 0 frames dropped |
+| V4L2 userspace pipeline | ✅ | poll + DQBUF capture loop |
+| RTSP streaming (H264/H265) | ✅ | GStreamer pipeline |
+| Local display (SDL2 + overlay) | ✅ | libjpeg MJPEG decode |
+| CLI arguments | ✅ | getopt_long |
+| RTSP authentication | ✅ | Basic auth |
+| Legacy libusb cleanup | ✅ | 8 files deleted |
+
+### ⬜ Chưa làm
+
+| Tính năng | Ưu tiên |
 |---|---|
-| MJPEG 640x480 @ 30fps | ✅ Hoạt động |
-| RTSP streaming (H264/H265) | ✅ Hoạt động |
-| Local display (SDL2 + overlay) | ✅ Hoạt động |
-| Hotplug auto-reconnect | ✅ Đã enable |
-| CLI arguments đầy đủ | ✅ getopt_long |
-| Exposure / Brightness / Contrast | ✅ UVC controls |
-| Camera list (`--list`) | ✅ Scan USB |
-| RTSP authentication | ✅ Basic auth |
-| H265 encoding | ✅ x265enc pipeline |
-| unbind_c270.sh (--rebind/--status) | ✅ Rewrite |
-| Test scripts TC1-TC4 | ✅ |
-| README.md đầy đủ requirements | ✅ |
+| V4L2 Controls (exposure/brightness/contrast) | 🔥 Task B6 — tiếp theo |
+| Benchmark với mycam.ko | Sau B6 |
+| Multi-camera support | Low |
 
 ### Cách chạy nhanh
 
 ```bash
-# Build
+# Build kernel module
+cd kernel && make   # auto-sign for Secure Boot
+
+# Build userspace app
 cd build && cmake .. && make -j$(nproc)
 
-# Unbind kernel driver
-sudo bash unbind_c270.sh
+# Test kernel module (automated)
+sudo bash tools/b5_integration_test.sh
 
-# Chạy driver (default: MJPEG 640x480 H264)
+# Chạy thủ công
+echo -n "1-10:1.0" | sudo tee /sys/bus/usb/drivers/uvcvideo/unbind
+sudo insmod kernel/mycam.ko
 sudo ./build/c270_app
 
 # RTSP client
 ffplay rtsp://127.0.0.1:8554/camera0
-
-# Hoặc GStreamer (latency thấp hơn)
-gst-launch-1.0 rtspsrc location=rtsp://127.0.0.1:8554/camera0 latency=0 ! decodebin ! autovideosink
 ```
 
 ---
 
 ## 2. Cấu Hình Đã Verify
 
-### UVC Probe (đã xác nhận hoạt động)
+### UVC Probe (kernel module mycam.ko)
 
-| Format | FormatIndex | FrameIndex | Resolution | MaxPayloadTransfer |
+| Format | FormatIndex | FrameIndex | Resolution | Verified |
 |---|---|---|---|---|
-| YUYV | 1 | 3 | 176x144 | 512 B |
-| **MJPEG** | **2** | **1** | **640x480** | **1,280 B** |
+| **MJPEG** | **1** | **1** | **640x480** | ✅ mycam.ko |
 
 ### Alt Setting
 
-Driver chọn **alt=10** (comfort mode, 2x headroom):
-- Camera cần: 1280 bytes
-- Alt=10 cho: 2688 bytes (effective)
-- Kết quả: 0 JPEG corruption warnings
+Kernel module tự chọn alt setting nhỏ nhất đủ bandwidth (chuẩn UVC spec):
+- dwMaxPayloadTransferSize từ camera negotiate
+- Chọn alt có effective_pkt_size >= cần thiết
 
-### Commits
+### Commits (branch: phase-c-v4l2-migration)
 
 ```
-eea03ae  Complete all requirements: exposure, camera list, H265, RTSP auth, README
-14752e3  Approach B: CLI args, hotplug, unbind rewrite, test scripts
-9f4a15d  Fix RTSP push-buffer -2 spam on client disconnect
-a559bdf  Switch from YUYV 176x144 to MJPEG 640x480@30fps
-a7927ad  Initial commit for GitNexus analysis
+d2603eb  refactor(phase-a): remove legacy libusb code, add build gitignore
+cddcb98  fix(phase-b): mycam.ko integration test passing — 3 USB driver bugs fixed
+1fe74c4  feat(phase-b): add mycam.ko kernel module scaffold
+67d1dab  fix(phase-c): resolve conflicting types warnings
+095930f  feat(phase-c): CMake uses V4L2 pipeline, remove libusb
+ef12571  feat(phase-c): rewrite main.c for V4L2 pipeline
 ```
 
 ---
 
 ## 3. Vấn Đề Đã Biết
 
+### Secure Boot — MOK enrollment cần reboot
+Lần đầu build trên máy mới cần: `mokutil --import` → reboot → Enroll MOK trong UEFI shim.
+
 ### VLC 3.0.x không kết nối được RTSP
+Module SAT>IP chặn URL `rtsp://`. Dùng ffplay hoặc GStreamer client.
 
-**Nguyên nhân:** Module SAT>IP chặn URL `rtsp://`.
-**Workaround:** Dùng ffplay hoặc GStreamer client. Đây là bug của VLC.
-
-### IP Camera / ONVIF — chưa implement
-
-Ngoài scope USB driver. Nếu cần, thêm module `ip_camera.c` sử dụng GStreamer `rtspsrc`.
-
-### Windows — chưa test
-
-Code dùng libusb + SDL2 + GStreamer (tất cả portable). Cần test build trên Windows.
+### GStreamer v4l2src buffer pool activation
+`gst-launch-1.0 v4l2src` có thể fail "Buffer pool activation failed" trong một số trường hợp.
+Workaround: dùng `v4l2-ctl --stream-mmap` để test trực tiếp, hoặc set `num-buffers` prop.
 
 ---
 
-## 4. Nếu Tiếp Tục Phát Triển
-
-### Ưu tiên 1: Benchmark performance
-```bash
-# Đo CPU
-sudo ./build/c270_app --no-display &
-top -p $(pgrep c270_app)
-
-# Đo memory leak
-valgrind --leak-check=full sudo ./build/c270_app --no-display --no-stream
-```
-
-### Ưu tiên 2: Multi-camera
-- Chạy nhiều instance với port khác nhau: `c270_app -p 8554 & c270_app -p 8555`
-- Hoặc refactor thành camera manager
-
-### Ưu tiên 3: Runtime config change
-- Thêm stdin command reader hoặc Unix socket
-- Cho phép thay đổi brightness/exposure/fps khi đang stream
-
-### Ưu tiên 4: IP camera module
-- Thêm `ip_camera.c` dùng GStreamer `rtspsrc` làm input
-- ONVIF discovery với `onvif-ws-client`
-
----
-
-## 5. File Quan Trọng
+## 4. File Quan Trọng
 
 | File | Vai trò |
 |---|---|
-| `src/main.c` | Entry point, CLI parsing, event loop |
-| `src/c270_uvc.c` | UVC protocol, camera controls, alt selection |
-| `src/c270_capture.c` | ISO capture, MJPEG decode, custom JPEG handler |
-| `src/c270_stream.c` | GStreamer RTSP server, H264/H265, auth |
-| `src/c270_hotplug.c` | Watchdog thread, auto-reconnect |
-| `unbind_c270.sh` | Unbind/rebind kernel driver |
-| `README.md` | Tài liệu đầy đủ requirements + verification |
-| `docs/WORK_LOG_2026-05-06.md` | Nhật ký công việc hôm nay |
+| **kernel/mycam_main.c** | Module init, USB probe, UVC Probe/Commit |
+| **kernel/mycam_video.c** | V4L2 device, IOCTL ops |
+| **kernel/mycam_vb2.c** | VB2 queue ops, start/stop streaming |
+| **kernel/mycam_urb.c** | URB pool, UVC header parse, frame accumulator |
+| **kernel/mycam.h** | Shared structs, constants |
+| `src/main.c` | Userspace entry, V4L2 capture loop |
+| `src/c270_v4l2.c` | V4L2 device open/format/mmap |
+| `src/c270_stream.c` | GStreamer RTSP server |
+| `tools/b5_integration_test.sh` | Automated kernel module test |
+| `docs/WORK_LOG_2026-05-13.md` | Nhật ký hôm nay |
+| `docs/superpowers/specs/2026-05-13-v4l2-kernel-migration-design.md` | Design spec |
 
 ---
 
-## 6. CLI Quick Reference
+## 5. CLI Quick Reference
 
 ```
 sudo ./build/c270_app [OPTIONS]
 
   --list                  Liệt kê cameras
-  -F mjpeg|yuyv           Format (default: mjpeg)
   -W N -H N               Resolution (default: 640x480)
   -f N                    FPS (default: 30)
   -C h264|h265            Codec (default: h264)
   -P password             RTSP password
-  -e N                    Exposure manual (default: auto)
-  -b N -c N               Brightness / Contrast
   -p N                    RTSP port (default: 8554)
   --no-display            Headless mode
   --no-stream             Disable RTSP
-  --no-hotplug            Disable auto-reconnect
   --help                  Help
 ```
