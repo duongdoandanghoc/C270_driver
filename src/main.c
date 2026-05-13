@@ -112,7 +112,7 @@ static AppConfig parse_args(int argc, char *argv[]) {
     AppConfig app;
     memset(&app, 0, sizeof(app));
     /* Defaults */
-    strncpy(app.dev_path, "/dev/video0", sizeof(app.dev_path) - 1);
+    strncpy(app.dev_path, "/dev/video2", sizeof(app.dev_path) - 1);
     app.width  = 640;
     app.height = 480;
     app.fps    = 30;
@@ -243,7 +243,7 @@ int main(int argc, char *argv[]) {
     /* ── Step 3: Open V4L2 device ── */
     if (!g_app.no_display) {
         display_show_status(&g_display, DISP_STATUS_RECONNECTING,
-                            "Dang ket noi camera...", 0);
+                            "Dang ket noi camera...", 0, NULL, NULL);
     }
 
     if (try_open_device() < 0) {
@@ -251,13 +251,13 @@ int main(int argc, char *argv[]) {
                 g_app.dev_path);
         if (!g_app.no_display) {
             display_show_status(&g_display, DISP_STATUS_DISCONNECTED,
-                                "Camera chua duoc ket noi", 0);
+                                "Camera chua duoc ket noi", 0, NULL, NULL);
         }
     } else {
         printf("[MAIN] Camera kết nối thành công!\n");
         if (!g_app.no_display) {
             display_show_status(&g_display, DISP_STATUS_CONNECTED,
-                                "Camera da ket noi", 0);
+                                "Camera da ket noi", 0, NULL, NULL);
             /* Show green status briefly */
             uint64_t show_until = app_now_ms() + CONNECTED_SHOW_MS;
             while (app_now_ms() < show_until && g_running) {
@@ -287,6 +287,10 @@ int main(int argc, char *argv[]) {
     uint64_t      uptime_accumulated_ms = 0;
     uint64_t      uptime_connect_time = camera_connected ? app_now_ms() : 0;
 
+    /* Status image buffer for streaming while disconnected */
+    uint8_t      *status_jpeg = NULL;
+    uint32_t      status_jpeg_size = 0;
+
     while (g_running) {
         /* ── Camera disconnected: show status + try reconnect ── */
         if (!camera_connected) {
@@ -304,9 +308,12 @@ int main(int argc, char *argv[]) {
 
                 printf("[MAIN] Đang thử kết nối lại camera...\n");
                 if (!g_app.no_display) {
+                    if (status_jpeg) { free(status_jpeg); status_jpeg = NULL; }
                     display_show_status(&g_display, DISP_STATUS_RECONNECTING,
                                         "Dang ket noi lai camera...",
-                                        (uint32_t)(uptime_accumulated_ms / 1000));
+                                        (uint32_t)(uptime_accumulated_ms / 1000),
+                                        g_app.no_stream ? NULL : &status_jpeg,
+                                        g_app.no_stream ? NULL : &status_jpeg_size);
                 }
 
                 if (try_open_device() == 0) {
@@ -323,7 +330,8 @@ int main(int argc, char *argv[]) {
 
                     if (!g_app.no_display) {
                         display_show_status(&g_display, DISP_STATUS_CONNECTED, msg,
-                                            (uint32_t)(uptime_accumulated_ms / 1000));
+                                            (uint32_t)(uptime_accumulated_ms / 1000),
+                                            NULL, NULL);
                         /* Show green briefly */
                         uint64_t show_until = app_now_ms() + CONNECTED_SHOW_MS;
                         while (app_now_ms() < show_until && g_running) {
@@ -334,6 +342,11 @@ int main(int argc, char *argv[]) {
                         }
                     }
                 }
+            }
+
+            /* Keep the RTSP stream alive with the status image (10 fps) */
+            if (!g_app.no_stream && status_jpeg && status_jpeg_size > 0) {
+                stream_push_mjpeg(&g_stream, status_jpeg, status_jpeg_size);
             }
 
             usleep(100000); /* 100ms sleep trong disconnect loop */
@@ -418,12 +431,16 @@ int main(int argc, char *argv[]) {
 
         camera_connected = 0;
         consecutive_errors = 0;
-        last_reconnect_attempt = 0;  /* try immediately next loop */
+        /* Delay initial reconnect attempt so the DISCONNECTED screen is visible */
+        last_reconnect_attempt = app_now_ms() - RECONNECT_INTERVAL_MS + 1000; 
 
         if (!g_app.no_display) {
+            if (status_jpeg) { free(status_jpeg); status_jpeg = NULL; }
             display_show_status(&g_display, DISP_STATUS_DISCONNECTED,
                                 "Camera da bi rut! Cho ket noi lai...",
-                                (uint32_t)(uptime_accumulated_ms / 1000));
+                                (uint32_t)(uptime_accumulated_ms / 1000),
+                                g_app.no_stream ? NULL : &status_jpeg,
+                                g_app.no_stream ? NULL : &status_jpeg_size);
         }
     }
 
@@ -439,6 +456,7 @@ cleanup:
     if (!g_app.no_display)
         display_free(&g_display);
     v4l2_device_close(&g_v4l2);
+    if (status_jpeg) free(status_jpeg);
 
     printf("[MAIN] Goodbye. (Reconnects: %d)\n", total_reconnects);
     return 0;

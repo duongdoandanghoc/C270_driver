@@ -477,7 +477,8 @@ void display_show_mjpeg(DisplayContext *disp,
  * CONTEXT: Main thread (gọi từ capture loop)
  */
 void display_show_status(DisplayContext *disp, DisplayStatusType type,
-                         const char *message, uint32_t uptime_secs)
+                         const char *message, uint32_t uptime_secs,
+                         uint8_t **out_jpeg, uint32_t *out_jpeg_size)
 {
     if (!disp->is_init) return;
 
@@ -562,6 +563,46 @@ void display_show_status(DisplayContext *disp, DisplayStatusType type,
     char title_buf[256];
     snprintf(title_buf, sizeof(title_buf), "%s | %s", status_text, message);
     SDL_SetWindowTitle((SDL_Window *)disp->sdl_window, title_buf);
+
+    /* Grab the JPEG BEFORE swapping the buffer */
+    if (out_jpeg && out_jpeg_size && win_w > 0 && win_h > 0) {
+        int pitch = win_w * 3;
+        uint8_t *rgb_pixels = malloc(win_w * win_h * 3);
+        if (rgb_pixels) {
+            if (SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGB24, rgb_pixels, pitch) == 0) {
+                struct jpeg_compress_struct cinfo;
+                struct jpeg_error_mgr jerr;
+                cinfo.err = jpeg_std_error(&jerr);
+                jpeg_create_compress(&cinfo);
+
+                unsigned char *mem_buf = NULL;
+                unsigned long mem_size = 0;
+                jpeg_mem_dest(&cinfo, &mem_buf, &mem_size);
+
+                cinfo.image_width = win_w;
+                cinfo.image_height = win_h;
+                cinfo.input_components = 3;
+                cinfo.in_color_space = JCS_RGB;
+
+                jpeg_set_defaults(&cinfo);
+                jpeg_set_quality(&cinfo, 80, TRUE);
+                jpeg_start_compress(&cinfo, TRUE);
+
+                JSAMPROW row_pointer[1];
+                while (cinfo.next_scanline < cinfo.image_height) {
+                    row_pointer[0] = &rgb_pixels[cinfo.next_scanline * pitch];
+                    jpeg_write_scanlines(&cinfo, row_pointer, 1);
+                }
+
+                jpeg_finish_compress(&cinfo);
+                jpeg_destroy_compress(&cinfo);
+
+                *out_jpeg = mem_buf;
+                *out_jpeg_size = (uint32_t)mem_size;
+            }
+            free(rgb_pixels);
+        }
+    }
 
     SDL_RenderPresent(renderer);
 }

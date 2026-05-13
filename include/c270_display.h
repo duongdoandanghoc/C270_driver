@@ -52,6 +52,7 @@ typedef enum {
     DISP_STATUS_ERROR            /* lỗi — nền đỏ đậm */
 } DisplayStatusType;
 void display_show_status(DisplayContext *disp, DisplayStatusType type,
-                         const char *message, uint32_t uptime_secs);
+                         const char *message, uint32_t uptime_secs,
+                         uint8_t **out_jpeg, uint32_t *out_jpeg_size);
 
 #endif /* C270_DISPLAY_H */
