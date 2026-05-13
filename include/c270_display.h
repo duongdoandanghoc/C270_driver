@@ -41,4 +41,14 @@ void display_show_mjpeg(DisplayContext *disp,
 int  display_poll_events(DisplayContext *disp);  /* return 0=ok, -1=quit */
 void display_free(DisplayContext *disp);
 
+/* Show status overlay (disconnect/reconnect messages) */
+typedef enum {
+    DISP_STATUS_DISCONNECTED,   /* camera rút ra — nền đỏ */
+    DISP_STATUS_RECONNECTING,   /* đang reconnect — nền cam */
+    DISP_STATUS_CONNECTED,      /* kết nối lại thành công — nền xanh */
+    DISP_STATUS_ERROR            /* lỗi — nền đỏ đậm */
+} DisplayStatusType;
+void display_show_status(DisplayContext *disp, DisplayStatusType type,
+                         const char *message);
+
 #endif /* C270_DISPLAY_H */

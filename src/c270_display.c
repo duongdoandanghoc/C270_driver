@@ -210,6 +210,90 @@ void display_show_mjpeg(DisplayContext *disp,
     SDL_RenderPresent(renderer);
 }
 
+/*
+ * display_show_status — Show status overlay on camera window
+ *
+ * TÁC DỤNG:
+ *   Hiển thị thông báo trạng thái camera lên cửa sổ SDL2 thay vì
+ *   chỉ in ra terminal. Người dùng sẽ thấy trực quan khi camera
+ *   bị rút, đang reconnect, hoặc kết nối lại thành công.
+ *
+ *   Background color theo loại status:
+ *     DISCONNECTED  → đỏ (200,30,30)
+ *     RECONNECTING  → cam (200,140,0)
+ *     CONNECTED     → xanh lá (30,160,60)
+ *     ERROR         → đỏ đậm (140,10,10)
+ *
+ * TÁC ĐỘNG:
+ *   - Clear cửa sổ, vẽ background + icon bar + message vào title
+ *   - RenderPresent → cập nhật ngay trên màn hình
+ *
+ * CONTEXT: Main thread (gọi từ capture loop)
+ */
+void display_show_status(DisplayContext *disp, DisplayStatusType type,
+                         const char *message)
+{
+    if (!disp->is_init) return;
+
+    SDL_Renderer *renderer = (SDL_Renderer *)disp->sdl_renderer;
+
+    /* Background color theo status type */
+    uint8_t r, g, b;
+    const char *icon;
+    switch (type) {
+    case DISP_STATUS_DISCONNECTED:
+        r = 180; g = 30;  b = 30;  icon = "⚠ DISCONNECTED"; break;
+    case DISP_STATUS_RECONNECTING:
+        r = 200; g = 140; b = 0;   icon = "⟳ RECONNECTING"; break;
+    case DISP_STATUS_CONNECTED:
+        r = 30;  g = 160; b = 60;  icon = "✓ CONNECTED";    break;
+    case DISP_STATUS_ERROR:
+    default:
+        r = 140; g = 10;  b = 10;  icon = "✗ ERROR";        break;
+    }
+
+    /* Clear with status color */
+    SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+    SDL_RenderClear(renderer);
+
+    /* Central dark bar for text readability */
+    int win_w = 0, win_h = 0;
+    SDL_GetWindowSize((SDL_Window*)disp->sdl_window, &win_w, &win_h);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 140);
+
+    int bar_h = 80;
+    int bar_y = (win_h - bar_h) / 2;
+    SDL_Rect bar = {0, bar_y, win_w, bar_h};
+    SDL_RenderFillRect(renderer, &bar);
+
+    /* White icon/indicator circles */
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 220);
+    int cx = win_w / 2;
+    int cy = bar_y - 30;
+    /* Draw camera icon (simple rectangle + circle) */
+    SDL_Rect cam_body = {cx - 30, cy - 15, 60, 30};
+    SDL_RenderFillRect(renderer, &cam_body);
+    /* Lens circle (approximate with small filled rect) */
+    SDL_Rect lens = {cx - 8, cy - 8, 16, 16};
+    SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+    SDL_RenderFillRect(renderer, &lens);
+
+    /* Window title carries the message text
+     * (SDL2 doesn't have built-in text rendering without SDL2_ttf)
+     */
+    char title_buf[256];
+    time_t t = time(NULL);
+    struct tm *tm_info = localtime(&t);
+    char time_str[32];
+    strftime(time_str, sizeof(time_str), "%H:%M:%S", tm_info);
+    snprintf(title_buf, sizeof(title_buf),
+             "%s | %s | %s", icon, message, time_str);
+    SDL_SetWindowTitle((SDL_Window *)disp->sdl_window, title_buf);
+
+    SDL_RenderPresent(renderer);
+}
+
 int display_poll_events(DisplayContext *disp) {
     (void)disp;
     SDL_Event event;
