@@ -83,6 +83,13 @@ static int mycam_uvc_ctrl_msg(struct mycam_device *cam,
 	u8  type;
 	int ret;
 
+	/*
+	 * LƯU Ý: data buffer PHẢI là kmalloc'd (DMA-safe).
+	 * Kernel >=5.x: usb_control_msg() WARN nếu buffer nằm trên
+	 * stack hoặc vmalloc space → gây EAGAIN hoặc data corruption.
+	 * Caller chịu trách nhiệm đảm bảo buffer hợp lệ.
+	 */
+
 	/* UVC VideoStreaming interface request */
 	if (request == UVC_SET_CUR)
 		type = USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE;
@@ -104,6 +111,8 @@ static int mycam_uvc_ctrl_msg(struct mycam_device *cam,
 		dev_err(&cam->udev->dev,
 			"UVC ctrl msg req=0x%02x sel=0x%02x: %d\n",
 			request, selector, ret);
+	else
+		ret = 0;  /* usb_control_msg trả bytes transferred khi OK → normalize về 0 */
 	return ret;
 }
 
@@ -130,41 +139,53 @@ static int mycam_uvc_ctrl_msg(struct mycam_device *cam,
 int mycam_uvc_probe_commit(struct mycam_device *cam,
 			   struct mycam_uvc_probe *probe_out)
 {
-	struct mycam_uvc_probe probe;
+	struct mycam_uvc_probe *probe;
 	int ret;
 
-	memset(&probe, 0, sizeof(probe));
-	probe.bmHint        = cpu_to_le16(0x01);  /* suggest dwFrameInterval */
-	probe.bFormatIndex  = 1;  /* MJPEG format index (C270: index 1) */
-	probe.bFrameIndex   = 1;  /* 640x480 frame index */
-	probe.dwFrameInterval = cpu_to_le32(333333); /* 30fps = 10^7/30 = 333333 */
+	/*
+	 * usb_control_msg() yêu cầu buffer phải DMA-safe (kmalloc'd).
+	 * Kernel >=5.x WARN + fail nếu buffer nằm trên stack.
+	 * → Dùng kmalloc thay vì local variable.
+	 */
+	probe = kmalloc(sizeof(*probe), GFP_KERNEL);
+	if (!probe)
+		return -ENOMEM;
 
-	/* Step 1: Propose */
+	memset(probe, 0, sizeof(*probe));
+	probe->bmHint        = cpu_to_le16(0x01);  /* suggest dwFrameInterval */
+	probe->bFormatIndex  = 1;  /* MJPEG format index (C270: index 1) */
+	probe->bFrameIndex   = 1;  /* 640x480 frame index */
+	probe->dwFrameInterval = cpu_to_le32(333333); /* 30fps = 10^7/30 = 333333 */
+
+	/* Step 1: Propose format to camera */
 	ret = mycam_uvc_ctrl_msg(cam, UVC_SET_CUR, UVC_VS_PROBE_CONTROL,
-				 &probe, MYCAM_UVC_PROBE_SZ);
+				 probe, MYCAM_UVC_PROBE_SZ);
 	if (ret < 0)
-		return ret;
+		goto out_free;
 
 	/* Step 2: Read back negotiated values */
-	memset(&probe, 0, sizeof(probe));
+	memset(probe, 0, sizeof(*probe));
 	ret = mycam_uvc_ctrl_msg(cam, UVC_GET_CUR, UVC_VS_PROBE_CONTROL,
-				 &probe, MYCAM_UVC_PROBE_SZ);
+				 probe, MYCAM_UVC_PROBE_SZ);
 	if (ret < 0)
-		return ret;
+		goto out_free;
 
 	dev_info(&cam->udev->dev,
 		 "UVC probe: dwMaxVideoFrameSize=%u dwMaxPayloadTransferSize=%u\n",
-		 le32_to_cpu(probe.dwMaxVideoFrameSize),
-		 le32_to_cpu(probe.dwMaxPayloadTransferSize));
+		 le32_to_cpu(probe->dwMaxVideoFrameSize),
+		 le32_to_cpu(probe->dwMaxPayloadTransferSize));
 
-	/* Step 3: Commit */
+	/* Step 3: Commit — lock in negotiated format */
 	ret = mycam_uvc_ctrl_msg(cam, UVC_SET_CUR, UVC_VS_COMMIT_CONTROL,
-				 &probe, MYCAM_UVC_PROBE_SZ);
+				 probe, MYCAM_UVC_PROBE_SZ);
 	if (ret < 0)
-		return ret;
+		goto out_free;
 
-	*probe_out = probe;
-	return 0;
+	*probe_out = *probe;
+
+out_free:
+	kfree(probe);
+	return ret;
 }
 
 /*
